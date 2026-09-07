@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <title>Mechatronics Engineering</title>
 
     <style>
+
         * {
             margin: 0;
             padding: 0;
@@ -14,199 +16,126 @@
         }
 
         body {
-            min-height: 100vh;
             font-family: Arial, "Noto Sans Thai", sans-serif;
+            min-height: 100vh;
+            overflow: hidden;
 
             background:
-                radial-gradient(circle at 70% 40%,
-                rgba(0, 210, 255, 0.08),
-                transparent 30%),
+                radial-gradient(circle at 20% 20%, #183b52 0%, transparent 28%),
+                radial-gradient(circle at 80% 75%, #243052 0%, transparent 30%),
                 #07111d;
 
             color: white;
-            overflow: hidden;
         }
 
-        /* ---------------- MAIN ---------------- */
 
-        .container {
-            min-height: 100vh;
+        /* =========================
+           MAIN
+        ========================= */
+
+        .hero {
+            width: 100%;
+            height: 100vh;
 
             display: flex;
             justify-content: center;
             align-items: center;
 
             position: relative;
+            overflow: hidden;
         }
 
-        .content {
-            text-align: center;
-            z-index: 5;
-        }
 
-        /* ---------------- TOP TEXT ---------------- */
+        /* =========================
+           GRADIENT GLOW
+        ========================= */
 
-        .major {
-            color: #38d9f5;
-            font-size: 15px;
-            letter-spacing: 6px;
-            margin-bottom: 25px;
-            font-weight: 500;
-        }
-
-        /* ---------------- NAME ---------------- */
-
-        h1 {
-            font-size: clamp(50px, 8vw, 95px);
-            font-weight: 800;
-            letter-spacing: 2px;
-
-            color: #f4f9fc;
-
-            text-shadow:
-                0 0 25px rgba(60, 220, 255, 0.12);
-        }
-
-        h1 span {
-            color: #39d9f5;
-        }
-
-        /* เส้นใต้ชื่อ */
-
-        .line {
-            width: 90px;
-            height: 4px;
-
-            background: #39d9f5;
-
-            margin: 25px auto;
-
-            border-radius: 10px;
-
-            box-shadow:
-                0 0 15px rgba(57, 217, 245, 0.6);
-        }
-
-        /* ---------------- DESCRIPTION ---------------- */
-
-        .description {
-            color: #8193a5;
-            font-size: 14px;
-
-            letter-spacing: 4px;
-        }
-
-        /* ---------------- GEAR ---------------- */
-
-        .gear {
+        .glow {
             position: absolute;
 
-            color: #243747;
+            width: 500px;
+            height: 500px;
 
-            font-size: 180px;
+            border-radius: 50%;
 
-            opacity: 0.45;
+            background: #28d7ff;
 
-            z-index: 1;
+            filter: blur(150px);
 
-            animation: rotateGear 18s linear infinite;
+            opacity: 0.08;
         }
 
-        .gear.small {
-            font-size: 90px;
-
-            color: #1b3443;
-
-            opacity: 0.7;
-
-            animation:
-                rotateGearReverse 12s linear infinite;
+        .glow1 {
+            top: -250px;
+            left: -150px;
         }
 
-        /* ตำแหน่งฟันเฟือง */
-
-        .gear1 {
-            top: 8%;
-            left: 8%;
+        .glow2 {
+            bottom: -300px;
+            right: -150px;
+            background: #9d6cff;
         }
 
-        .gear2 {
-            bottom: 7%;
-            right: 10%;
-        }
 
-        .gear3 {
-            top: 12%;
-            right: 13%;
-        }
-
-        .gear4 {
-            bottom: 15%;
-            left: 15%;
-        }
-
-        /* ---------------- ANIMATION ---------------- */
-
-        @keyframes rotateGear {
-
-            from {
-                transform: rotate(0deg);
-            }
-
-            to {
-                transform: rotate(360deg);
-            }
-
-        }
-
-        @keyframes rotateGearReverse {
-
-            from {
-                transform: rotate(360deg);
-            }
-
-            to {
-                transform: rotate(0deg);
-            }
-
-        }
-
-        /* ---------------- CIRCUIT LINE ---------------- */
+        /* =========================
+           CIRCUIT BACKGROUND
+        ========================= */
 
         .circuit {
             position: absolute;
 
-            width: 180px;
-            height: 180px;
+            width: 300px;
+            height: 200px;
 
-            border: 1px solid rgba(57, 217, 245, 0.12);
-
-            border-radius: 20px;
-
-            transform: rotate(45deg);
-
-            z-index: 0;
+            opacity: 0.35;
         }
 
-        .circuit::before {
-            content: "";
+        .circuit.left {
+            left: 5%;
+            bottom: 15%;
+        }
 
+        .circuit.right {
+            right: 5%;
+            top: 15%;
+        }
+
+        .line-c {
             position: absolute;
 
-            width: 60px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                #35d9ff,
+                transparent
+            );
+
             height: 1px;
-
-            background: #39d9f5;
-
-            top: 50%;
-            left: -60px;
-
-            opacity: 0.3;
         }
 
-        .circuit::after {
-            content: "";
+        .line1 {
+            width: 180px;
+            top: 60px;
+            left: 30px;
+        }
 
+        .line2 {
+            width: 120px;
+            top: 100px;
+            left: 90px;
+            transform: rotate(90deg);
+        }
+
+        .line3 {
+            width: 100px;
+            top: 140px;
+            left: 170px;
+        }
+
+
+        /* จุดวงจร */
+
+        .node {
             position: absolute;
 
             width: 7px;
@@ -214,129 +143,604 @@
 
             border-radius: 50%;
 
-            background: #39d9f5;
-
-            top: 50%;
-            right: -4px;
+            background: #43ddff;
 
             box-shadow:
-                0 0 12px #39d9f5;
+                0 0 10px #43ddff,
+                0 0 20px #43ddff;
+
+            animation: pulse 2s infinite;
         }
 
-        .circuit1 {
-            top: 18%;
-            left: 28%;
+        .node1 {
+            top: 56px;
+            left: 30px;
         }
 
-        .circuit2 {
-            bottom: 20%;
-            right: 28%;
+        .node2 {
+            top: 96px;
+            left: 145px;
         }
 
-        /* ---------------- BOTTOM ---------------- */
+        .node3 {
+            top: 136px;
+            left: 265px;
+        }
 
-        .bottom {
-            margin-top: 35px;
+        @keyframes pulse {
+
+            0%,100% {
+                opacity: .4;
+                transform: scale(.8);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.4);
+            }
+        }
+
+
+        /* =========================
+           GEAR
+        ========================= */
+
+        .gear {
+            position: absolute;
+
+            font-size: 150px;
+
+            color: #1d3445;
+
+            opacity: .8;
+
+            filter:
+                drop-shadow(0 0 12px rgba(44,214,255,.12));
+
+            animation: rotate 18s linear infinite;
+
+            user-select: none;
+        }
+
+        .gear.small {
+            font-size: 75px;
+
+            color: #263c50;
+
+            animation:
+                rotateReverse 10s linear infinite;
+        }
+
+        .gear1 {
+            left: 8%;
+            top: 8%;
+        }
+
+        .gear2 {
+            right: 8%;
+            bottom: 7%;
+        }
+
+        .gear3 {
+            right: 16%;
+            top: 13%;
+        }
+
+        .gear4 {
+            left: 16%;
+            bottom: 12%;
+        }
+
+        @keyframes rotate {
+
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes rotateReverse {
+
+            from {
+                transform: rotate(360deg);
+            }
+
+            to {
+                transform: rotate(0deg);
+            }
+        }
+
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
+
+        .content {
+            position: relative;
+
+            text-align: center;
+
+            z-index: 10;
+
+            animation: appear 1.2s ease;
+        }
+
+        @keyframes appear {
+
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        /* =========================
+           MECHATRONICS LABEL
+        ========================= */
+
+        .label {
+            font-size: 15px;
+
+            letter-spacing: 6px;
+
+            font-weight: bold;
+
+            margin-bottom: 25px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #36e1ff,
+                    #8a7dff,
+                    #ff72d2,
+                    #36e1ff
+                );
+
+            background-size: 300%;
+
+            -webkit-background-clip: text;
+            color: transparent;
+
+            animation: gradientMove 5s linear infinite;
+        }
+
+        @keyframes gradientMove {
+
+            0% {
+                background-position: 0%;
+            }
+
+            100% {
+                background-position: 300%;
+            }
+        }
+
+
+        /* =========================
+           NAME
+        ========================= */
+
+        h1 {
+
+            font-size: clamp(50px, 8vw, 100px);
+
+            font-weight: 900;
+
+            letter-spacing: 2px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #55e8ff,
+                    #7a9cff,
+                    #b76cff,
+                    #ff70c9
+                );
+
+            background-size: 200%;
+
+            -webkit-background-clip: text;
+
+            color: transparent;
+
+            animation: gradientMove 5s ease infinite;
+
+            filter:
+                drop-shadow(
+                    0 0 25px rgba(68,210,255,.15)
+                );
+        }
+
+
+        /* =========================
+           UNDERLINE
+        ========================= */
+
+        .underline {
+
+            width: 100px;
+            height: 4px;
+
+            margin: 25px auto;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #35e4ff,
+                    #806dff,
+                    #ff6fca
+                );
+
+            box-shadow:
+                0 0 15px rgba(70,220,255,.5);
+
+            animation: lineGlow 2s infinite alternate;
+        }
+
+        @keyframes lineGlow {
+
+            from {
+                width: 70px;
+            }
+
+            to {
+                width: 120px;
+            }
+        }
+
+
+        /* =========================
+           DESCRIPTION
+        ========================= */
+
+        .description {
+
+            color: #93aabd;
+
+            font-size: 14px;
+
+            letter-spacing: 4px;
+
+            margin-bottom: 35px;
+        }
+
+
+        /* =========================
+           MECHATRONICS SKILLS
+        ========================= */
+
+        .skills {
 
             display: flex;
+
             justify-content: center;
+
             gap: 12px;
 
-            color: #627789;
-
-            font-size: 11px;
-            letter-spacing: 2px;
+            flex-wrap: wrap;
         }
 
-        .bottom span {
-            color: #39d9f5;
+        .skill {
+
+            padding: 10px 17px;
+
+            border: 1px solid rgba(91,220,255,.25);
+
+            border-radius: 50px;
+
+            color: #b9d8e5;
+
+            background:
+                rgba(25,50,67,.45);
+
+            backdrop-filter: blur(8px);
+
+            font-size: 12px;
+
+            letter-spacing: 1px;
+
+            transition: .3s;
         }
 
-        /* ---------------- MOBILE ---------------- */
+        .skill:hover {
 
-        @media (max-width: 600px) {
+            transform:
+                translateY(-5px)
+                scale(1.05);
 
-            .major {
-                font-size: 11px;
+            border-color: #4ce4ff;
+
+            color: white;
+
+            box-shadow:
+                0 0 20px rgba(61,220,255,.2);
+        }
+
+
+        /* =========================
+           CENTER MECHATRONICS ICON
+        ========================= */
+
+        .core {
+
+            position: absolute;
+
+            width: 85px;
+            height: 85px;
+
+            border-radius: 50%;
+
+            left: 50%;
+            top: -115px;
+
+            transform: translateX(-50%);
+
+            border: 1px solid rgba(65,220,255,.35);
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(55,218,255,.2),
+                    rgba(10,25,38,.7)
+                );
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            font-size: 42px;
+
+            box-shadow:
+                0 0 30px rgba(47,218,255,.15);
+
+            animation: coreFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes coreFloat {
+
+            0%,100% {
+                transform:
+                    translateX(-50%)
+                    translateY(0);
+            }
+
+            50% {
+                transform:
+                    translateX(-50%)
+                    translateY(-8px);
+            }
+        }
+
+
+        /* =========================
+           ORBIT
+        ========================= */
+
+        .orbit {
+
+            position: absolute;
+
+            width: 145px;
+            height: 145px;
+
+            border:
+
+                1px dashed
+                rgba(58,219,255,.2);
+
+            border-radius: 50%;
+
+            left: 50%;
+            top: -145px;
+
+            transform: translateX(-50%);
+
+            animation:
+                orbitRotate 12s linear infinite;
+        }
+
+        .orbit-dot {
+
+            position: absolute;
+
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #42e0ff;
+
+            box-shadow:
+                0 0 15px #42e0ff;
+
+            top: 12px;
+            left: 50%;
+        }
+
+        @keyframes orbitRotate {
+
+            from {
+                transform:
+                    translateX(-50%)
+                    rotate(0);
+            }
+
+            to {
+                transform:
+                    translateX(-50%)
+                    rotate(360deg);
+            }
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media(max-width:600px) {
+
+            .label {
+                font-size: 10px;
                 letter-spacing: 3px;
             }
 
             h1 {
-                font-size: 42px;
+                font-size: 43px;
             }
 
             .description {
-                font-size: 10px;
+                font-size: 9px;
                 letter-spacing: 2px;
             }
 
             .gear {
-                font-size: 100px;
+                font-size: 90px;
             }
 
             .gear.small {
-                font-size: 60px;
+                font-size: 50px;
             }
 
             .circuit {
                 display: none;
             }
+
+            .core,
+            .orbit {
+                display: none;
+            }
+
         }
+
     </style>
+
 </head>
+
 
 <body>
 
-    <div class="container">
+    <main class="hero">
 
-        <!-- ฟันเฟืองด้านหลัง -->
+
+        <!-- แสงพื้นหลัง -->
+
+        <div class="glow glow1"></div>
+        <div class="glow glow2"></div>
+
+
+        <!-- ฟันเฟือง -->
 
         <div class="gear gear1">⚙</div>
 
-        <div class="gear small gear2">⚙</div>
+        <div class="gear gear2">⚙</div>
 
         <div class="gear small gear3">⚙</div>
 
-        <div class="gear gear4">⚙</div>
+        <div class="gear small gear4">⚙</div>
 
 
-        <!-- เส้นวงจร -->
+        <!-- วงจรซ้าย -->
 
-        <div class="circuit circuit1"></div>
+        <div class="circuit left">
 
-        <div class="circuit circuit2"></div>
+            <div class="line-c line1"></div>
+            <div class="line-c line2"></div>
+            <div class="line-c line3"></div>
+
+            <div class="node node1"></div>
+            <div class="node node2"></div>
+            <div class="node node3"></div>
+
+        </div>
+
+
+        <!-- วงจรขวา -->
+
+        <div class="circuit right">
+
+            <div class="line-c line1"></div>
+            <div class="line-c line2"></div>
+            <div class="line-c line3"></div>
+
+            <div class="node node1"></div>
+            <div class="node node2"></div>
+            <div class="node node3"></div>
+
+        </div>
 
 
         <!-- เนื้อหาหลัก -->
 
-        <div class="content">
+        <section class="content">
 
-            <div class="major">
+
+            <!-- แกนกลางของระบบ -->
+
+            <div class="orbit">
+                <div class="orbit-dot"></div>
+            </div>
+
+            <div class="core">
+                ⚙
+            </div>
+
+
+            <div class="label">
                 MECHATRONICS ENGINEERING
             </div>
 
+
             <h1>
-                นารีลักษณ์ <span>ยะวรรณ์</span>
+                นารีลักษณ์ ยะวรรณ์
             </h1>
 
-            <div class="line"></div>
 
-            <div class="description">
+            <div class="underline"></div>
+
+
+            <p class="description">
                 MECHANICAL • ELECTRONICS • CONTROL • AUTOMATION
+            </p>
+
+
+            <!-- ลูกเล่นที่สื่อถึงสาขา -->
+
+            <div class="skills">
+
+                <div class="skill">
+                    ⚙ ROBOTICS
+                </div>
+
+                <div class="skill">
+                    ⚡ ELECTRONICS
+                </div>
+
+                <div class="skill">
+                    ◉ CONTROL
+                </div>
+
+                <div class="skill">
+                    ⌁ AUTOMATION
+                </div>
+
             </div>
 
-            <div class="bottom">
-                <span>⚙</span>
-                ENGINEERING
-                <span>•</span>
-                INNOVATION
-                <span>•</span>
-                TECHNOLOGY
-            </div>
+        </section>
 
-        </div>
-
-    </div>
+    </main>
 
 </body>
+
 </html>
