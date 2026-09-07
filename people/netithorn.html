@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เนติธร ตันต๊ะ | Mechatronics Engineering</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Kanit', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #0a0505;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden; /* ซ่อนขอบที่แสงทะลุออกไป */
+      position: relative;
+      padding: 20px;
+    }
+
+    /* วงกลมแสงนีออนพื้นหลัง (โทนร้อน) ที่ขยับได้อิสระ */
+    .glow-sphere-1, .glow-sphere-2 {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px); /* เพิ่มความเบลอให้เนียนขึ้น */
+      z-index: 1;
+    }
+    
+    .glow-sphere-1 {
+      width: 350px; height: 350px;
+      background: linear-gradient(#ff416c, #ff4b2b);
+      top: -50px; left: -50px; opacity: 0.6;
+      animation: moveGlow1 15s infinite ease-in-out;
+    }
+
+    .glow-sphere-2 {
+      width: 400px; height: 400px;
+      background: linear-gradient(#f9d423, #ff4e50);
+      bottom: -80px; right: -50px; opacity: 0.55;
+      animation: moveGlow2 18s infinite ease-in-out;
+    }
+
+    /* กรอบการ์ดกระจกแก้ว */
+    .profile-card {
+      position: relative;
+      width: 100%; max-width: 440px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(255, 75, 43, 0.05);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 36px 28px;
+      color: #ffffff;
+      text-align: center;
+      z-index: 10;
+      animation: cardEntrance 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    /* วงแหวนเรดาร์หมุนรอบอวตาร */
+    .avatar-wrapper {
+      position: relative;
+      width: 120px; height: 120px;
+      margin: 0 auto 20px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .avatar-wrapper::before {
+      content: '';
+      position: absolute;
+      width: 100%; height: 100%;
+      border: 2px dashed rgba(255, 75, 43, 0.6);
+      border-radius: 50%;
+      animation: spin 12s linear infinite;
+    }
+    
+    .avatar-wrapper::after {
+      content: '';
+      position: absolute;
+      width: 110%; height: 110%;
+      border: 1px solid rgba(249, 212, 35, 0.4);
+      border-top-color: transparent;
+      border-bottom-color: transparent;
+      border-radius: 50%;
+      animation: spin 8s linear infinite reverse;
+    }
+
+    .avatar {
+      width: 96px; height: 96px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.5);
+      border: 2px solid #ff4b2b;
+      display: flex;
+      align-items: center; justify-content: center;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 36px; font-weight: 800;
+      color: #ff4b2b;
+      box-shadow: 0 0 20px rgba(255, 75, 43, 0.4);
+      text-shadow: 0 0 10px rgba(255, 75, 43, 0.8);
+      z-index: 2;
+    }
+
+    /* แท็กรายวิชา */
+    .badge-course {
+      display: inline-block;
+      font-family: 'Orbitron', sans-serif;
+      background: rgba(255, 75, 43, 0.1);
+      border: 1px solid rgba(255, 75, 43, 0.3);
+      color: #ff4b2b;
+      font-size: 11px; letter-spacing: 1.5px;
+      padding: 4px 14px; border-radius: 20px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      animation: pulseGlow 2s infinite alternate;
+    }
+
+    h1 {
+      font-size: 24px; font-weight: 600;
+      margin-bottom: 6px;
+      background: linear-gradient(180deg, #fff, #ffcccb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 14px; color: #cbd5e1;
+      margin-bottom: 24px;
+      letter-spacing: 1px;
+    }
+
+    /* กล่องข้อมูลย่อย */
+    .info-container {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 16px; margin-bottom: 20px;
+      text-align: left;
+      transition: transform 0.3s ease;
+    }
+    
+    .info-container:hover {
+      transform: scale(1.02);
+      border-color: rgba(255, 75, 43, 0.3);
+    }
+
+    .info-row {
+      display: flex; justify-content: space-between;
+      padding: 8px 0; font-size: 13.5px;
+    }
+    .info-row:not(:last-child) { border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+    .info-key { color: #94a3b8; }
+    .info-val { color: #f8fafc; }
+
+    /* แท็กความสนใจ */
+    .skills-title {
+      font-size: 12px; text-transform: uppercase;
+      letter-spacing: 1px; color: #94a3b8;
+      margin-bottom: 10px;
+    }
+
+    .skills-group {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      justify-content: center; margin-bottom: 26px;
+    }
+
+    .skill-tag {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #e2e8f0;
+      padding: 6px 14px; border-radius: 8px;
+      font-size: 12px; cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .skill-tag:hover {
+      background: rgba(255, 75, 43, 0.15);
+      border-color: #ff4b2b; color: #fff;
+      transform: translateY(-3px);
+      box-shadow: 0 4px 10px rgba(255, 75, 43, 0.2);
+    }
+
+    /* ปุ่มกด */
+    .btn-group { display: flex; flex-direction: column; gap: 12px; }
+
+    .btn {
+      display: block; width: 100%; padding: 12px;
+      border-radius: 12px; text-decoration: none;
+      font-size: 14px; font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ff416c, #ff4b2b);
+      color: #fff; font-weight: 600;
+      box-shadow: 0 4px 15px rgba(255, 75, 43, 0.2);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 0 20px rgba(255, 75, 43, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #e2e8f0;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.3); color: #fff;
+    }
+
+    /* แอนิเมชันไฟหมุนวน (Lava effect) */
+    @keyframes moveGlow1 {
+      0% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(150px, 50px) scale(1.2); }
+      50% { transform: translate(50px, 150px) scale(0.9); }
+      75% { transform: translate(-100px, 50px) scale(1.1); }
+      100% { transform: translate(0, 0) scale(1); }
+    }
+
+    @keyframes moveGlow2 {
+      0% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(-150px, -50px) scale(1.1); }
+      50% { transform: translate(-50px, -150px) scale(0.8); }
+      75% { transform: translate(100px, -100px) scale(1.2); }
+      100% { transform: translate(0, 0) scale(1); }
+    }
+
+    /* แอนิเมชันอื่นๆ */
+    @keyframes cardEntrance {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes pulseGlow {
+      from { box-shadow: 0 0 5px rgba(255, 75, 43, 0.1); }
+      to { box-shadow: 0 0 15px rgba(255, 75, 43, 0.5); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- แสงไฟพื้นหลัง -->
+  <div class="glow-sphere-1"></div>
+  <div class="glow-sphere-2"></div>
+
+  <!-- ตัวการ์ด -->
+  <div class="profile-card">
+    <div class="avatar-wrapper">
+      <div class="avatar">N</div>
+    </div>
+
+    <div class="badge-course">ENGMC613 • 2569</div>
+    <h1>นายเนติธร ตันต๊ะ</h1>
+    <p class="subtitle">Mechatronics Engineering</p>
+
+    <div class="info-container">
+      <div class="info-row">
+        <span class="info-key">รหัสนักศึกษา</span>
+        <span class="info-val">67545202010-9</span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">อีเมล</span>
+        <span class="info-val">netiithr83@gmail.com</span>
+      </div>
+      <div class="info-row">
+        <span class="info-key">GitHub</span>
+        <span class="info-val">netithr83-cloud</span>
+      </div>
+    </div>
+
+    <div class="skills-title">Core Disciplines</div>
+    <div class="skills-group">
+      <span class="skill-tag">Embedded Systems</span>
+      <span class="skill-tag">PIC16F887</span>
+      <span class="skill-tag">MATLAB</span>
+      <span class="skill-tag">Automation</span>
+    </div>
+
+    <div class="btn-group">
+      <a href="https://github.com/netithr83-cloud" target="_blank" class="btn btn-primary">ดูโปรไฟล์ GitHub ↗</a>
+      <a href="../index.html" class="btn btn-secondary">← กลับหน้าทำเนียบนักศึกษา</a>
+    </div>
+  </div>
+
+</body>
+</html>
