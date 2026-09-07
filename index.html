@@ -1,41 +1,922 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>World Travel Game</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #38bdf8, #6366f1);
+    color: #222;
+}
+
+/* HEADER */
+
+header {
+    background: #111827;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+/* GAME */
+
+.game {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* STATUS */
+
+.status {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.box {
+    background: white;
+    padding: 15px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,.2);
+}
+
+.box h3 {
+    margin: 5px;
+}
+
+/* WORLD */
+
+.world {
+    background: #dff6ff;
+    padding: 25px;
+    border-radius: 20px;
+}
+
+.world h2 {
+    text-align: center;
+}
+
+/* COUNTRY GRID */
+
+.countries {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.country {
+    background: white;
+    border: none;
+    border-radius: 15px;
+    padding: 25px 10px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: .2s;
+    box-shadow: 0 5px 12px rgba(0,0,0,.15);
+}
+
+.country:hover {
+    transform: translateY(-5px) scale(1.03);
+    background: #f0f9ff;
+}
+
+/* TOURIST */
+
+.tourist {
+    display: none;
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+}
+
+.tourist h2 {
+    text-align: center;
+}
+
+.places {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.place {
+    background: #f8fafc;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,.15);
+}
+
+.place .image {
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 70px;
+    background: #dbeafe;
+}
+
+.place-info {
+    padding: 15px;
+}
+
+.place h3 {
+    margin-top: 0;
+}
+
+.visit {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.visit:hover {
+    background: #1d4ed8;
+}
+
+.visited {
+    background: #16a34a !important;
+}
+
+/* BACK */
+
+.back {
+    margin-bottom: 15px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #111827;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* MESSAGE */
+
+.log {
+    background: white;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+#message {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* MOBILE */
+
+@media(max-width: 700px) {
+
+    .status {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .countries {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .places {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+</head>
+
 <body>
 
-<h1>ทำเนียบนักศึกษารายวิชา ENGMC613 2569</h1>
+<header>
 
-<h2>ผู้สอน</h2>
-<a href="people/ajkarn.html">นายพีรธรรม เตชะพะโลกุล</a>
-<h2>นักศึกษา</h2>
-<ul>
-  <li><a href="#">นายกิตติศักดิ์ คำแพง</a></li>
-  <li><a href="#">นายเนติธร ตันต๊ะ</a></li>
-  <li><a href="#">นายภูบดินทร์ แก้วยองผาง</a></li>
-  <li><a href="people/rachata.html">นายรชต ปานงาม</a></li>
-  <li><a href="#">นายอณาจักร หลวงสว่าง</a></li>
-  <li><a href="#">นายกิติพรรณ สุคำ</a></li>
-  <li><a href="#">นายธนโชค อิ่นแก้ว</a></li>
-  <li><a href="#">นายเมฆา สีม่วงคำ</a></li>
-  <li><a href="#">นายเมธา ไกรทอง</a></li>
-  <li><a href="#">นายอชิตะ หนองเทา</a></li>
-  <li><a href="#">นายอนันตพงษ์ จันทะวัง</a></li>
-  <li><a href="#">นายอโนทัย คำใส</a></li>
-  <li><a href="#">นางสาวดุจดาว ลุงพงษ์</a></li>
-  <li><a href="#">นางสาวนารีลักษณ์ ยะวรรณ์</a></li>
-  <li><a href="#">นายรพีพงศ์ ลิ้มชวพันธนกุล</a></li>
-  <li><a href="#">นายจิตติ ศรีทิน</a></li>
-  <li><a href="#">นายภีม อภิสิทธิ์สันติกุล</a></li>
-  <li><a href="#">นายศักดิ์สกุล อนุภาพ</a></li>
-  <li><a href="#">นายคุณากร เขียวกาจ</a></li>
-  <li><a href="#">นายณัฐนันท์ ชาวเกษตร</a></li>
-  <li><a href="people/Tanawat.html">นายธนวัฒน์ ตันมูล</a></li>
-  <li><a href="#">นายธีระศักดิ์ สืบตา</a></li>
-  <li><a href="people/noppart.html">นายนพรัตน์ ท้วมแก้ว</a></li>
-  <li><a href="#">นายพีรภัทร อินชัย</a></li>
-  <li><a href="#">นายวิชิต แสนนวล</a></li>
-  <li><a href="#">นายวุฒิไกร ร่มพนาธรรม</a></li>
-  <li><a href="#">นายอัมรินทร์ เป็งปาง</a></li>
-</ul>
+<h1>🌍 World Travel Game</h1>
+
+<p>✈️ นักเดินทาง: นายนพรัตน์ ท้วมแก้ว</p>
+
+</header>
+
+
+<div class="game">
+
+<!-- STATUS -->
+
+<div class="status">
+
+<div class="box">
+<h3>💰 เงิน</h3>
+<div id="money">10,000</div>
+</div>
+
+<div class="box">
+<h3>⭐ คะแนน</h3>
+<div id="score">0</div>
+</div>
+
+<div class="box">
+<h3>🌎 ประเทศ</h3>
+<div id="countryCount">1</div>
+</div>
+
+<div class="box">
+<h3>📍 อยู่ที่</h3>
+<div id="current">🇹🇭 ไทย</div>
+</div>
+
+</div>
+
+
+<!-- WORLD PAGE -->
+
+<div class="world" id="worldPage">
+
+<h2>🗺️ เลือกประเทศ</h2>
+
+<div class="countries">
+
+<button class="country" onclick="openCountry('ไทย')">
+🇹🇭<br>ประเทศไทย
+</button>
+
+<button class="country" onclick="openCountry('ญี่ปุ่น')">
+🇯🇵<br>ญี่ปุ่น
+</button>
+
+<button class="country" onclick="openCountry('เกาหลีใต้')">
+🇰🇷<br>เกาหลีใต้
+</button>
+
+<button class="country" onclick="openCountry('จีน')">
+🇨🇳<br>จีน
+</button>
+
+<button class="country" onclick="openCountry('ฝรั่งเศส')">
+🇫🇷<br>ฝรั่งเศส
+</button>
+
+<button class="country" onclick="openCountry('อังกฤษ')">
+🇬🇧<br>อังกฤษ
+</button>
+
+<button class="country" onclick="openCountry('อิตาลี')">
+🇮🇹<br>อิตาลี
+</button>
+
+<button class="country" onclick="openCountry('เยอรมนี')">
+🇩🇪<br>เยอรมนี
+</button>
+
+<button class="country" onclick="openCountry('สหรัฐอเมริกา')">
+🇺🇸<br>สหรัฐอเมริกา
+</button>
+
+<button class="country" onclick="openCountry('แคนาดา')">
+🇨🇦<br>แคนาดา
+</button>
+
+<button class="country" onclick="openCountry('บราซิล')">
+🇧🇷<br>บราซิล
+</button>
+
+<button class="country" onclick="openCountry('ออสเตรเลีย')">
+🇦🇺<br>ออสเตรเลีย
+</button>
+
+</div>
+
+</div>
+
+
+<!-- TOURIST PAGE -->
+
+<div class="tourist" id="touristPage">
+
+<button class="back" onclick="backToWorld()">
+⬅️ กลับแผนที่โลก
+</button>
+
+<h2 id="countryTitle">
+สถานที่ท่องเที่ยว
+</h2>
+
+<div class="places" id="places">
+
+</div>
+
+</div>
+
+
+<!-- MESSAGE -->
+
+<div class="log">
+
+<h2>📖 บันทึกการเดินทาง</h2>
+
+<p id="message">
+ยินดีต้อนรับสู่ World Travel Game 🌍
+</p>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   GAME DATA
+========================= */
+
+const data = {
+
+"ไทย": [
+
+{
+name:"วัดพระแก้ว",
+icon:"🏯",
+description:"สถานที่สำคัญใจกลางกรุงเทพฯ",
+reward:100,
+cost:500
+},
+
+{
+name:"ดอยอินทนนท์",
+icon:"⛰️",
+description:"ยอดเขาที่สูงที่สุดในประเทศไทย",
+reward:120,
+cost:700
+},
+
+{
+name:"ภูเก็ต",
+icon:"🏝️",
+description:"ทะเลและชายหาดชื่อดัง",
+reward:150,
+cost:900
+}
+
+],
+
+"ญี่ปุ่น": [
+
+{
+name:"ภูเขาไฟฟูจิ",
+icon:"🗻",
+description:"ภูเขาที่มีชื่อเสียงของญี่ปุ่น",
+reward:200,
+cost:1500
+},
+
+{
+name:"โตเกียว",
+icon:"🏙️",
+description:"เมืองหลวงที่เต็มไปด้วยเทคโนโลยี",
+reward:180,
+cost:1300
+},
+
+{
+name:"วัดคิโยมิสึ",
+icon:"⛩️",
+description:"วัดชื่อดังในเกียวโต",
+reward:220,
+cost:1700
+}
+
+],
+
+"เกาหลีใต้": [
+
+{
+name:"โซล",
+icon:"🏙️",
+description:"เมืองหลวงของเกาหลีใต้",
+reward:180,
+cost:1300
+},
+
+{
+name:"พระราชวังเคียงบกกุง",
+icon:"🏯",
+description:"พระราชวังเก่าแก่ของเกาหลี",
+reward:200,
+cost:1500
+},
+
+{
+name:"เกาะเชจู",
+icon:"🌋",
+description:"เกาะท่องเที่ยวยอดนิยม",
+reward:250,
+cost:1800
+}
+
+],
+
+"จีน": [
+
+{
+name:"กำแพงเมืองจีน",
+icon:"🏯",
+description:"หนึ่งในสถานที่สำคัญที่สุดของจีน",
+reward:250,
+cost:1800
+},
+
+{
+name:"เซี่ยงไฮ้",
+icon:"🏙️",
+description:"มหานครขนาดใหญ่ของจีน",
+reward:180,
+cost:1400
+},
+
+{
+name:"พระราชวังต้องห้าม",
+icon:"🏯",
+description:"พระราชวังประวัติศาสตร์",
+reward:220,
+cost:1600
+}
+
+],
+
+"ฝรั่งเศส": [
+
+{
+name:"หอไอเฟล",
+icon:"🗼",
+description:"แลนด์มาร์กชื่อดังของปารีส",
+reward:300,
+cost:3000
+},
+
+{
+name:"พิพิธภัณฑ์ลูฟวร์",
+icon:"🏛️",
+description:"พิพิธภัณฑ์ชื่อดังระดับโลก",
+reward:280,
+cost:2800
+},
+
+{
+name:"พระราชวังแวร์ซาย",
+icon:"🏰",
+description:"พระราชวังประวัติศาสตร์",
+reward:300,
+cost:3000
+}
+
+],
+
+"อังกฤษ": [
+
+{
+name:"บิ๊กเบน",
+icon:"🕰️",
+description:"หอนาฬิกาที่มีชื่อเสียง",
+reward:300,
+cost:3200
+},
+
+{
+name:"พระราชวังบักกิงแฮม",
+icon:"🏰",
+description:"สถานที่สำคัญในกรุงลอนดอน",
+reward:280,
+cost:3000
+},
+
+{
+name:"ลอนดอนอาย",
+icon:"🎡",
+description:"ชิงช้าสวรรค์ขนาดใหญ่",
+reward:250,
+cost:2800
+}
+
+],
+
+"อิตาลี": [
+
+{
+name:"โคลอสเซียม",
+icon:"🏟️",
+description:"สนามกีฬาประวัติศาสตร์โรมัน",
+reward:300,
+cost:2800
+},
+
+{
+name:"หอเอนเมืองปิซา",
+icon:"🏛️",
+description:"หอคอยชื่อดังของอิตาลี",
+reward:280,
+cost:2600
+},
+
+{
+name:"เวนิส",
+icon:"🚤",
+description:"เมืองแห่งคลอง",
+reward:320,
+cost:3000
+}
+
+],
+
+"เยอรมนี": [
+
+{
+name:"ประตูบรันเดนบูร์ก",
+icon:"🏛️",
+description:"แลนด์มาร์กสำคัญของเบอร์ลิน",
+reward:280,
+cost:2700
+},
+
+{
+name:"ปราสาทนอยชวานสไตน์",
+icon:"🏰",
+description:"ปราสาทสวยงามบนภูเขา",
+reward:320,
+cost:3000
+},
+
+{
+name:"เบอร์ลิน",
+icon:"🏙️",
+description:"เมืองหลวงของเยอรมนี",
+reward:250,
+cost:2500
+}
+
+],
+
+"สหรัฐอเมริกา": [
+
+{
+name:"เทพีเสรีภาพ",
+icon:"🗽",
+description:"สัญลักษณ์สำคัญของนิวยอร์ก",
+reward:400,
+cost:4000
+},
+
+{
+name:"ไทม์สแควร์",
+icon:"🌃",
+description:"ย่านใจกลางนิวยอร์ก",
+reward:350,
+cost:3800
+},
+
+{
+name:"แกรนด์แคนยอน",
+icon:"🏜️",
+description:"หุบเขาขนาดใหญ่",
+reward:450,
+cost:4500
+}
+
+],
+
+"แคนาดา": [
+
+{
+name:"น้ำตกไนแองการา",
+icon:"🌊",
+description:"น้ำตกขนาดใหญ่ที่มีชื่อเสียง",
+reward:400,
+cost:4000
+},
+
+{
+name:"โตรอนโต",
+icon:"🏙️",
+description:"เมืองสำคัญของแคนาดา",
+reward:350,
+cost:3500
+},
+
+{
+name:"อุทยานแบมฟ์",
+icon:"🏔️",
+description:"ธรรมชาติและภูเขาที่สวยงาม",
+reward:450,
+cost:4200
+}
+
+],
+
+"บราซิล": [
+
+{
+name:"รูปปั้นพระเยซู",
+icon:"🗿",
+description:"แลนด์มาร์กสำคัญของริโอเดจาเนโร",
+reward:400,
+cost:4500
+},
+
+{
+name:"ชายหาดโคปาคาบานา",
+icon:"🏖️",
+description:"ชายหาดชื่อดัง",
+reward:350,
+cost:4000
+},
+
+{
+name:"ป่าอเมซอน",
+icon:"🌳",
+description:"ป่าฝนขนาดใหญ่",
+reward:500,
+cost:5000
+}
+
+],
+
+"ออสเตรเลีย": [
+
+{
+name:"ซิดนีย์โอเปร่าเฮาส์",
+icon:"🎭",
+description:"สถาปัตยกรรมชื่อดังของซิดนีย์",
+reward:400,
+cost:3500
+},
+
+{
+name:"หาดบอนได",
+icon:"🏖️",
+description:"ชายหาดยอดนิยม",
+reward:350,
+cost:3200
+},
+
+{
+name:"เกรตแบร์ริเออร์รีฟ",
+icon:"🐠",
+description:"แนวปะการังขนาดใหญ่",
+reward:500,
+cost:4500
+}
+
+]
+
+};
+
+
+/* =========================
+   VARIABLES
+========================= */
+
+let money = 10000;
+
+let score = 0;
+
+let currentCountry = "ไทย";
+
+let visitedCountries = ["ไทย"];
+
+let visitedPlaces = [];
+
+
+/* =========================
+   OPEN COUNTRY
+========================= */
+
+function openCountry(country) {
+
+    currentCountry = country;
+
+    document.getElementById("worldPage").style.display = "none";
+
+    document.getElementById("touristPage").style.display = "block";
+
+    document.getElementById("countryTitle").innerText =
+        "🌍 สถานที่ท่องเที่ยวใน " + country;
+
+    let placesHTML = "";
+
+    data[country].forEach((place, index) => {
+
+        let placeID = country + "-" + index;
+
+        let alreadyVisited =
+            visitedPlaces.includes(placeID);
+
+        placesHTML += `
+
+        <div class="place">
+
+            <div class="image">
+                ${place.icon}
+            </div>
+
+            <div class="place-info">
+
+                <h3>${place.name}</h3>
+
+                <p>${place.description}</p>
+
+                <p>💰 ค่าเที่ยว:
+                ${place.cost.toLocaleString()} บาท</p>
+
+                <p>⭐ รางวัล:
+                +${place.reward} คะแนน</p>
+
+                <button
+                    class="visit ${alreadyVisited ? 'visited' : ''}"
+                    onclick="visitPlace('${country}', ${index})"
+                    ${alreadyVisited ? 'disabled' : ''}
+                >
+
+                ${alreadyVisited
+                    ? "✅ เที่ยวแล้ว"
+                    : "✈️ ไปเที่ยว"}
+
+                </button>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+    document.getElementById("places").innerHTML =
+        placesHTML;
+}
+
+
+/* =========================
+   VISIT PLACE
+========================= */
+
+function visitPlace(country, index) {
+
+    let place = data[country][index];
+
+    let placeID = country + "-" + index;
+
+    if (visitedPlaces.includes(placeID)) {
+
+        showMessage("คุณเคยเที่ยวสถานที่นี้แล้ว");
+
+        return;
+    }
+
+    if (money < place.cost) {
+
+        showMessage(
+            "❌ เงินไม่พอ! ต้องใช้ " +
+            place.cost.toLocaleString() +
+            " บาท"
+        );
+
+        return;
+    }
+
+    money -= place.cost;
+
+    score += place.reward;
+
+    visitedPlaces.push(placeID);
+
+    if (!visitedCountries.includes(country)) {
+
+        visitedCountries.push(country);
+
+    }
+
+    showMessage(
+        "🎉 เที่ยว " +
+        place.name +
+        " สำเร็จ! +" +
+        place.reward +
+        " คะแนน"
+    );
+
+    updateGame();
+
+    openCountry(country);
+
+    checkWin();
+}
+
+
+/* =========================
+   BACK
+========================= */
+
+function backToWorld() {
+
+    document.getElementById("touristPage").style.display =
+        "none";
+
+    document.getElementById("worldPage").style.display =
+        "block";
+}
+
+
+/* =========================
+   UPDATE
+========================= */
+
+function updateGame() {
+
+    document.getElementById("money").innerText =
+        money.toLocaleString();
+
+    document.getElementById("score").innerText =
+        score;
+
+    document.getElementById("countryCount").innerText =
+        visitedCountries.length;
+
+    let flags = {
+
+        "ไทย":"🇹🇭",
+        "ญี่ปุ่น":"🇯🇵",
+        "เกาหลีใต้":"🇰🇷",
+        "จีน":"🇨🇳",
+        "ฝรั่งเศส":"🇫🇷",
+        "อังกฤษ":"🇬🇧",
+        "อิตาลี":"🇮🇹",
+        "เยอรมนี":"🇩🇪",
+        "สหรัฐอเมริกา":"🇺🇸",
+        "แคนาดา":"🇨🇦",
+        "บราซิล":"🇧🇷",
+        "ออสเตรเลีย":"🇦🇺"
+
+    };
+
+    document.getElementById("current").innerText =
+        flags[currentCountry] +
+        " " +
+        currentCountry;
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+function showMessage(text) {
+
+    document.getElementById("message").innerText =
+        text;
+}
+
+
+/* =========================
+   WIN
+========================= */
+
+function checkWin() {
+
+    if (visitedPlaces.length >= 36) {
+
+        showMessage(
+            "🏆 สุดยอด! คุณเที่ยวครบทุกสถานที่ทั่วโลกแล้ว! 🌍🎉"
+        );
+
+    }
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+updateGame();
+
+</script>
 
 </body>
 </html>
