@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>โปรไฟล์ - ธีระศักดิ์ สืบตา</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Sukhumvit Set', 'Segoe UI', Tahoma, sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .profile-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .cover-photo {
+            height: 120px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .avatar {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            border: 4px solid #ffffff;
+            margin-top: -55px;
+            object-fit: cover;
+            background-color: #ddd;
+        }
+
+        .profile-body {
+            padding: 24px;
+        }
+
+        .name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 4px;
+        }
+
+        .title {
+            font-size: 0.95rem;
+            color: #718096;
+            margin-bottom: 16px;
+        }
+
+        .bio {
+            font-size: 0.9rem;
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .skills {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .skill-tag {
+            background-color: #edf2f7;
+            color: #4a5568;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .social-btn {
+            display: block;
+            padding: 12px;
+            border-radius: 8px;
+            background-color: #4a5568;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+
+        .social-btn:hover {
+            background-color: #2d3748;
+        }
+
+        .social-btn.facebook { background-color: #1877f2; }
+        .social-btn.facebook:hover { background-color: #115cbf; }
+
+        .social-btn.github { background-color: #24292e; }
+        .social-btn.github:hover { background-color: #000000; }
+    </style>
+</head>
+<body>
+
+    <div class="profile-card">
+        <div class="cover-photo"></div>
+        <!-- ใส่ลิงก์รูปถ่ายของคุณใน src ด้านล่างนี้ -->
+        <img src="https://via.placeholder.com/150" alt="ธีระศักดิ์ สืบตา" class="avatar">
+        
+        <div class="profile-body">
+            <h1 class="name">ธีระศักดิ์ สืบตา</h1>
+            <p class="title">นักพัฒนาเว็บ / Web Developer</p>
+            
+            <p class="bio">
+                สวัสดีครับ! ยินดีต้อนรับสู่หน้าโปรไฟล์ของผม ผมมีความสนใจในการพัฒนาระบบ การเขียนโค้ด และการเรียนรู้เทคโนโลยีใหม่ๆ อยู่เสมอ
+            </p>
+
+            <div class="skills">
+                <span class="skill-tag">HTML/CSS</span>
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">UI/UX Design</span>
+            </div>
+
+            <div class="social-links">
+                <!-- ใส่ URL โซเชียลมีเดียของคุณใน href ด้านล่างนี้ -->
+                <a href="#" class="social-btn facebook">Facebook</a>
+                <a href="#" class="social-btn github">GitHub</a>
+                <a href="mailto:your-email@example.com" class="social-btn">ส่งอีเมลหาผม</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
