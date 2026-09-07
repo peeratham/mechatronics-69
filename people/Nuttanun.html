@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>นาย ณัฐนันท์ ชาวเกษตร</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #ffffff;
+            --text-muted: #aaaaaa;
+            --accent: #00ffcc;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .jet-card {
+            background-color: var(--card-bg);
+            border-left: 5px solid #444;
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        /* ลูกเล่นเวลาเอาเมาส์ชี้ */
+        .jet-card:hover {
+            transform: translateX(10px);
+            border-left-color: var(--accent);
+        }
+        /* ลูกเล่นเวลาคลิก (สถานะ Active) */
+        .jet-card.active {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-left: 5px solid #ffcc00;
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+        .jet-header h2 {
+            margin: 0 0 10px 0;
+            font-size: 1.5em;
+        }
+        .jet-summary {
+            color: var(--text-muted);
+            margin-bottom: 0;
+            transition: color 0.3s;
+        }
+        .jet-card.active .jet-summary {
+            color: #eeeeee;
+        }
+        /* ซ่อนรายละเอียดไว้ตอนเริ่มต้น */
+        .jet-details {
+            max-height: 0;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            visibility: hidden;
+        }
+        /* แสดงรายละเอียดเมื่อคลิก */
+        .jet-card.active .jet-details {
+            max-height: 500px;
+            opacity: 1;
+            visibility: visible;
+            margin-top: 20px;
+            border-top: 1px dashed rgba(255,255,255,0.3);
+            padding-top: 15px;
+        }
+        .jet-details ul {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .jet-details li {
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+        .highlight { color: #ffcc00; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h1>ข้อมูลอากาศยานขับไล่ กองทัพอากาศไทย</h1>
+    
+    <div class="container">
+        <!-- เครื่องบินลำที่ 1 -->
+        <div class="jet-card" onclick="toggleDetails(this)">
+            <div class="jet-header">
+                <h2>JAS 39 Gripen C/D</h2>
+                <p class="jet-summary">เครื่องบินขับไล่อเนกประสงค์ยุค 4.5 จากสวีเดน (คลิกเพื่อดูรายละเอียด)</p>
+            </div>
+            <div class="jet-details">
+                <ul>
+                    <li><span class="highlight">จำนวนประจำการ:</span> 11 เครื่อง (ฝูงบิน 701 สุราษฎร์ธานี)</li>
+                    <li><span class="highlight">เครื่องยนต์:</span> Volvo RM12 (เทอร์โบแฟน)</li>
+                    <li><span class="highlight">มิติขนาด:</span> ยาว 14.1 ม. / ปีกกว้าง 8.4 ม.</li>
+                    <li><span class="highlight">หน้าที่:</span> ขับไล่สกัดกั้น, โจมตีทางทะเล, ลาดตระเวน</li>
+                    <li><span class="highlight">อาวุธนำวิถี:</span> IRIS-T, AIM-120 AMRAAM, อาวุธต่อต้านเรือรบ RBS-15F</li>
+                    <li><span class="highlight">ประวัติ:</span> ประจำการปี 2554 เชื่อมต่อระบบ Network Centric เต็มรูปแบบ</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- เครื่องบินลำที่ 2 -->
+        <div class="jet-card" onclick="toggleDetails(this)">
+            <div class="jet-header">
+                <h2>F-16A/B Fighting Falcon</h2>
+                <p class="jet-summary">เครื่องบินขับไล่หลักที่ผ่านการอัปเกรด (MLU) (คลิกเพื่อดูรายละเอียด)</p>
+            </div>
+            <div class="jet-details">
+                <ul>
+                    <li><span class="highlight">จำนวนประจำการ:</span> ~50 เครื่อง (ฝูงบิน 103, 403, 211)</li>
+                    <li><span class="highlight">เครื่องยนต์:</span> Pratt & Whitney F100-PW-220/220E</li>
+                    <li><span class="highlight">มิติขนาด:</span> ยาว 15.06 ม. / ปีกกว้าง 9.96 ม.</li>
+                    <li><span class="highlight">หน้าที่:</span> ขับไล่สกัดกั้น, โจมตีภาคพื้นดินสนับสนุนทางอากาศ</li>
+                    <li><span class="highlight">อาวุธนำวิถี:</span> AIM-9 Sidewinder, AIM-120 AMRAAM, ระเบิดนำวิถีเลเซอร์</li>
+                    <li><span class="highlight">ประวัติ:</span> ประจำการตั้งแต่ปี 2531 ผ่านการปรับปรุงระบบเรดาร์และอาวุธให้ทันสมัย</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- เครื่องบินลำที่ 3 -->
+        <div class="jet-card" onclick="toggleDetails(this)">
+            <div class="jet-header">
+                <h2>F-5E/F Super Tigris</h2>
+                <p class="jet-summary">เครื่องบินขับไล่ยุคที่ 3 ที่ได้รับการอัปเกรดระบบอิเล็กทรอนิกส์ใหม่ (คลิกเพื่อดูรายละเอียด)</p>
+            </div>
+            <div class="jet-details">
+                <ul>
+                    <li><span class="highlight">จำนวนประจำการ:</span> ~14 เครื่อง (ฝูงบิน 211 อุบลราชธานี)</li>
+                    <li><span class="highlight">เครื่องยนต์:</span> 2x General Electric J85-GE-21B</li>
+                    <li><span class="highlight">มิติขนาด:</span> ยาว 14.45 ม. / ปีกกว้าง 8.13 ม.</li>
+                    <li><span class="highlight">หน้าที่:</span> ขับไล่สกัดกั้น, สนับสนุนทางอากาศระยะใกล้</li>
+                    <li><span class="highlight">อาวุธนำวิถี:</span> Python-4, IRIS-T, ระเบิด Mk.82</li>
+                    <li><span class="highlight">ประวัติ:</span> อัปเกรดโดยบริษัท Elbit Systems ของอิสราเอล ยืดอายุการใช้งานและติดอาวุธสายตาได้</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleDetails(card) {
+            // เช็คว่าการ์ดที่คลิกมีคลาส active อยู่แล้วหรือไม่
+            const isActive = card.classList.contains('active');
+            
+            // ล้างสถานะ active ของการ์ดใบอื่นทั้งหมด (เพื่อให้เปิดได้ทีละอัน)
+            const allCards = document.querySelectorAll('.jet-card');
+            allCards.forEach(c => c.classList.remove('active'));
+
+            // ถ้าการ์ดที่คลิกยังไม่ active ให้เพิ่มคลาสเข้าไป (เปิด)
+            if (!isActive) {
+                card.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
