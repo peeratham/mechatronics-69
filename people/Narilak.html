@@ -14,189 +14,250 @@
         }
 
         body {
-            font-family: Arial, "Noto Sans Thai", sans-serif;
             min-height: 100vh;
-            background: #f5f9fc;
-            color: #243447;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: Arial, "Noto Sans Thai", sans-serif;
+
+            background:
+                radial-gradient(circle at 70% 40%,
+                rgba(0, 210, 255, 0.08),
+                transparent 30%),
+                #07111d;
+
+            color: white;
             overflow: hidden;
         }
 
-        /* กล่องหลัก */
-        .hero {
-            width: 90%;
-            max-width: 1100px;
-            min-height: 600px;
-            background: white;
-            border-radius: 35px;
+        /* ---------------- MAIN ---------------- */
+
+        .container {
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
             position: relative;
-            overflow: hidden;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-
-            box-shadow: 0 20px 50px rgba(50, 100, 130, 0.12);
         }
 
-        /* วงกลมตกแต่ง */
-        .circle {
-            position: absolute;
-            border-radius: 50%;
-            background: #dff7fb;
-        }
-
-        .circle.one {
-            width: 230px;
-            height: 230px;
-            top: -100px;
-            left: -80px;
-        }
-
-        .circle.two {
-            width: 180px;
-            height: 180px;
-            right: -70px;
-            bottom: -70px;
-            background: #e9e5fa;
-        }
-
-        /* เส้นวงจร */
-        .circuit {
-            position: absolute;
-            width: 120px;
-            height: 120px;
-            border: 2px solid #b8eaf2;
-            border-radius: 15px;
-            opacity: 0.6;
-        }
-
-        .circuit::before,
-        .circuit::after {
-            content: "";
-            position: absolute;
-            background: #b8eaf2;
-        }
-
-        .circuit::before {
-            width: 40px;
-            height: 2px;
-            top: 35px;
-            left: -20px;
-        }
-
-        .circuit::after {
-            width: 2px;
-            height: 40px;
-            right: 30px;
-            bottom: -20px;
-        }
-
-        .circuit.left {
-            left: 40px;
-            top: 150px;
-            transform: rotate(-10deg);
-        }
-
-        .circuit.right {
-            right: 45px;
-            bottom: 130px;
-            transform: rotate(15deg);
-        }
-
-        /* เนื้อหา */
         .content {
-            position: relative;
-            z-index: 2;
-            padding: 40px;
+            text-align: center;
+            z-index: 5;
         }
 
-        .gear {
-            width: 70px;
-            height: 70px;
-            margin: 0 auto 25px;
+        /* ---------------- TOP TEXT ---------------- */
 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            background: #d9f5fa;
-            border-radius: 20px;
-
-            font-size: 38px;
-            transform: rotate(-10deg);
-
-            box-shadow: 0 10px 25px rgba(70, 190, 210, 0.15);
+        .major {
+            color: #38d9f5;
+            font-size: 15px;
+            letter-spacing: 6px;
+            margin-bottom: 25px;
+            font-weight: 500;
         }
 
-        .subtitle {
-            color: #36bfd3;
-            font-size: 17px;
-            letter-spacing: 5px;
-            font-weight: bold;
-            margin-bottom: 18px;
-        }
+        /* ---------------- NAME ---------------- */
 
         h1 {
-            font-size: clamp(45px, 7vw, 82px);
-            color: #25364a;
-            margin-bottom: 15px;
+            font-size: clamp(50px, 8vw, 95px);
             font-weight: 800;
+            letter-spacing: 2px;
+
+            color: #f4f9fc;
+
+            text-shadow:
+                0 0 25px rgba(60, 220, 255, 0.12);
         }
 
         h1 span {
-            color: #35c6dc;
+            color: #39d9f5;
         }
+
+        /* เส้นใต้ชื่อ */
 
         .line {
-            width: 75px;
-            height: 5px;
-            background: #36c6dc;
+            width: 90px;
+            height: 4px;
+
+            background: #39d9f5;
+
+            margin: 25px auto;
+
             border-radius: 10px;
-            margin: 0 auto 25px;
+
+            box-shadow:
+                0 0 15px rgba(57, 217, 245, 0.6);
         }
 
+        /* ---------------- DESCRIPTION ---------------- */
+
         .description {
-            color: #7a8998;
-            font-size: 16px;
+            color: #8193a5;
+            font-size: 14px;
+
+            letter-spacing: 4px;
+        }
+
+        /* ---------------- GEAR ---------------- */
+
+        .gear {
+            position: absolute;
+
+            color: #243747;
+
+            font-size: 180px;
+
+            opacity: 0.45;
+
+            z-index: 1;
+
+            animation: rotateGear 18s linear infinite;
+        }
+
+        .gear.small {
+            font-size: 90px;
+
+            color: #1b3443;
+
+            opacity: 0.7;
+
+            animation:
+                rotateGearReverse 12s linear infinite;
+        }
+
+        /* ตำแหน่งฟันเฟือง */
+
+        .gear1 {
+            top: 8%;
+            left: 8%;
+        }
+
+        .gear2 {
+            bottom: 7%;
+            right: 10%;
+        }
+
+        .gear3 {
+            top: 12%;
+            right: 13%;
+        }
+
+        .gear4 {
+            bottom: 15%;
+            left: 15%;
+        }
+
+        /* ---------------- ANIMATION ---------------- */
+
+        @keyframes rotateGear {
+
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+
+        }
+
+        @keyframes rotateGearReverse {
+
+            from {
+                transform: rotate(360deg);
+            }
+
+            to {
+                transform: rotate(0deg);
+            }
+
+        }
+
+        /* ---------------- CIRCUIT LINE ---------------- */
+
+        .circuit {
+            position: absolute;
+
+            width: 180px;
+            height: 180px;
+
+            border: 1px solid rgba(57, 217, 245, 0.12);
+
+            border-radius: 20px;
+
+            transform: rotate(45deg);
+
+            z-index: 0;
+        }
+
+        .circuit::before {
+            content: "";
+
+            position: absolute;
+
+            width: 60px;
+            height: 1px;
+
+            background: #39d9f5;
+
+            top: 50%;
+            left: -60px;
+
+            opacity: 0.3;
+        }
+
+        .circuit::after {
+            content: "";
+
+            position: absolute;
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #39d9f5;
+
+            top: 50%;
+            right: -4px;
+
+            box-shadow:
+                0 0 12px #39d9f5;
+        }
+
+        .circuit1 {
+            top: 18%;
+            left: 28%;
+        }
+
+        .circuit2 {
+            bottom: 20%;
+            right: 28%;
+        }
+
+        /* ---------------- BOTTOM ---------------- */
+
+        .bottom {
+            margin-top: 35px;
+
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+
+            color: #627789;
+
+            font-size: 11px;
             letter-spacing: 2px;
         }
 
-        /* ป้ายด้านล่าง */
-        .tags {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 30px;
-            flex-wrap: wrap;
+        .bottom span {
+            color: #39d9f5;
         }
 
-        .tag {
-            padding: 9px 17px;
-            border-radius: 50px;
-            background: #f0f9fb;
-            color: #45aabd;
-            font-size: 13px;
-            border: 1px solid #d8f1f5;
-        }
+        /* ---------------- MOBILE ---------------- */
 
-        /* Responsive */
         @media (max-width: 600px) {
 
-            .hero {
-                min-height: 520px;
-                border-radius: 25px;
-            }
-
-            .content {
-                padding: 25px;
-            }
-
-            .subtitle {
-                font-size: 12px;
+            .major {
+                font-size: 11px;
                 letter-spacing: 3px;
             }
 
@@ -205,8 +266,16 @@
             }
 
             .description {
-                font-size: 12px;
-                letter-spacing: 1px;
+                font-size: 10px;
+                letter-spacing: 2px;
+            }
+
+            .gear {
+                font-size: 100px;
+            }
+
+            .gear.small {
+                font-size: 60px;
             }
 
             .circuit {
@@ -218,21 +287,31 @@
 
 <body>
 
-    <main class="hero">
+    <div class="container">
 
-        <!-- ตกแต่งพื้นหลัง -->
-        <div class="circle one"></div>
-        <div class="circle two"></div>
+        <!-- ฟันเฟืองด้านหลัง -->
 
-        <div class="circuit left"></div>
-        <div class="circuit right"></div>
+        <div class="gear gear1">⚙</div>
+
+        <div class="gear small gear2">⚙</div>
+
+        <div class="gear small gear3">⚙</div>
+
+        <div class="gear gear4">⚙</div>
+
+
+        <!-- เส้นวงจร -->
+
+        <div class="circuit circuit1"></div>
+
+        <div class="circuit circuit2"></div>
+
 
         <!-- เนื้อหาหลัก -->
-        <section class="content">
 
-            <div class="gear">⚙</div>
+        <div class="content">
 
-            <div class="subtitle">
+            <div class="major">
                 MECHATRONICS ENGINEERING
             </div>
 
@@ -242,20 +321,22 @@
 
             <div class="line"></div>
 
-            <p class="description">
+            <div class="description">
                 MECHANICAL • ELECTRONICS • CONTROL • AUTOMATION
-            </p>
-
-            <div class="tags">
-                <div class="tag">⚙ Mechanical</div>
-                <div class="tag">⚡ Electronics</div>
-                <div class="tag">⌁ Control</div>
-                <div class="tag">◉ Automation</div>
             </div>
 
-        </section>
+            <div class="bottom">
+                <span>⚙</span>
+                ENGINEERING
+                <span>•</span>
+                INNOVATION
+                <span>•</span>
+                TECHNOLOGY
+            </div>
 
-    </main>
+        </div>
+
+    </div>
 
 </body>
 </html>
