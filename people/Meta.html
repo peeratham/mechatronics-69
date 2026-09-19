@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เมธา ไกรทอง | The Multi-Route Game</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Prompt', sans-serif;
+      background: linear-gradient(135deg, #09121c, #1a2a3a, #294052);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    .glass-box {
+      background: rgba(255, 255, 255, 0.05); 
+      padding: 3rem 4rem;
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+      width: 90%;
+      max-width: 800px;
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      background: -webkit-linear-gradient(#ffffff, #00f2fe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    h2 { font-size: 2rem; margin-bottom: 20px; }
+    p { font-size: 1.1rem; color: #b0c4de; margin-bottom: 30px; }
+
+    .cool-btn {
+      background: linear-gradient(45deg, #00c6ff, #0072ff);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      font-size: 1.2rem;
+      font-family: 'Prompt', sans-serif;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0, 114, 255, 0.4);
+      transition: all 0.3s ease;
+      margin-top: 20px;
+    }
+
+    .cool-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(0, 114, 255, 0.6);
+    }
+
+    .hidden-section {
+      display: none;
+      animation: fadeIn 0.6s forwards;
+    }
+
+    .grid-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .interactive-card {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      border-radius: 15px;
+      width: 200px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      cursor: pointer;
+      transition: transform 0.3s, background 0.3s;
+    }
+
+    .interactive-card:hover {
+      transform: translateY(-10px);
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 10px 20px rgba(0, 242, 254, 0.2);
+    }
+
+    .icon-display { font-size: 4rem; margin-bottom: 15px; }
+    .interactive-card h3 { font-size: 1.4rem; color: #00f2fe; margin-bottom: 5px; }
+    .interactive-card p { font-size: 0.85rem; color: #d1d8e0; margin-bottom: 0; }
+
+    #endingIcon { font-size: 5rem; margin-bottom: 20px; }
+    #endingTitle { color: #f9ca24; font-size: 2.5rem; margin-bottom: 15px; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glass-box">
+    
+    <!-- หน้า 1: เริ่มเกม -->
+    <div id="step1">
+      <h1>เมธา ไกรทอง</h1>
+      <p>The Master of Elements</p>
+      <button class="cool-btn" onclick="goToStep('step2')">เข้าสู่โลกจำลอง 🎮</button>
+    </div>
+
+    <!-- หน้า 2: เลือกสัตว์ -->
+    <div id="step2" class="hidden-section">
+      <h2>เลือกสัตว์ผู้นำทาง</h2>
+      <div class="grid-container">
+        <div class="interactive-card" onclick="setAnimal('หมาป่า', '🐺')">
+          <div class="icon-display">🐺</div>
+          <h3>หมาป่า</h3>
+          <p>สายต่อสู้ระยะประชิด</p>
+        </div>
+        <div class="interactive-card" onclick="setAnimal('อินทรี', '🦅')">
+          <div class="icon-display">🦅</div>
+          <h3>อินทรี</h3>
+          <p>สายสอดแนมและระยะไกล</p>
+        </div>
+        <div class="interactive-card" onclick="setAnimal('เสือดำ', '🐅')">
+          <div class="icon-display">🐅</div>
+          <h3>เสือดำ</h3>
+          <p>สายลอบสังหาร</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- หน้า 3: เลือกสถานที่ -->
+    <div id="step3" class="hidden-section">
+      <h2>เลือกจุดหมายปลายทาง</h2>
+      <div class="grid-container">
+        <div class="interactive-card" onclick="setLocation('ป่าเวทมนตร์', '🌲')">
+          <div class="icon-display">🌲</div>
+          <h3>ป่าเวทมนตร์</h3>
+        </div>
+        <div class="interactive-card" onclick="setLocation('นครไซเบอร์', '🏙️')">
+          <div class="icon-display">🏙️</div>
+          <h3>นครไซเบอร์</h3>
+        </div>
+        <div class="interactive-card" onclick="setLocation('ภูเขาไฟ', '🌋')">
+          <div class="icon-display">🌋</div>
+          <h3>ภูเขาไฟบรรลัยกัลป์</h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- หน้า 4: สรุปฉากจบ -->
+    <div id="step4" class="hidden-section">
+      <div id="endingIcon">❓</div>
+      <h2 id="endingTitle">ฉากจบของคุณ</h2>
+      <p id="endingDesc">รายละเอียดการผจญภัย...</p>
+      <button class="cool-btn" onclick="restartGame()">เริ่มการผจญภัยใหม่ 🔄</button>
+    </div>
+
+  </div>
+
+  <script>
+    let playerAnimal = "";
+    let playerAnimalIcon = "";
+    let playerLocation = "";
+    let playerLocationIcon = "";
+
+    function goToStep(stepId) {
+      document.querySelectorAll('.glass-box > div').forEach(div => div.style.display = 'none');
+      document.getElementById(stepId).style.display = 'block';
+    }
+
+    function setAnimal(animal, icon) {
+      playerAnimal = animal;
+      playerAnimalIcon = icon;
+      goToStep('step3');
+    }
+
+    function setLocation(location, icon) {
+      playerLocation = location;
+      playerLocationIcon = icon;
+      calculateEnding();
+    }
+
+    function calculateEnding() {
+      let title = "";
+      let desc = "";
+
+      // เส้นทางหมาป่า 🐺
+      if (playerAnimal === 'หมาป่า') {
+        if (playerLocation === 'ป่าเวทมนตร์') { title = "จ่าฝูงแห่งพงไพร"; desc = "คุณรวบรวมเหล่าสัตว์เวทมนตร์ สร้างกองทัพที่แข็งแกร่งที่สุดในป่าลึก"; }
+        else if (playerLocation === 'นครไซเบอร์') { title = "นักล่าบนตึกระฟ้า"; desc = "คุณดัดแปลงตัวเองเป็นไซบอร์กหมาป่า ล่าค่าหัวเหล่าอาชญากรในเงามืดของเมือง"; }
+        else { title = "สัตว์ร้ายแห่งเปลวเพลิง"; desc = "พลังความร้อนหลอมรวมเข้ากับคุณ กลายเป็นหมาป่าเพลิงที่ไม่มีใครกล้าต่อกร"; }
+      }
+      // เส้นทางอินทรี 🦅
+      else if (playerAnimal === 'อินทรี') {
+        if (playerLocation === 'ป่าเวทมนตร์') { title = "ผู้พิทักษ์ผืนฟ้า"; desc = "คุณโบยบินเหนือพงไพร คอยเตือนภัยและปกป้องชนเผ่าจากบนท้องฟ้า"; }
+        else if (playerLocation === 'นครไซเบอร์') { title = "โดรนสไนเปอร์ไร้เงา"; desc = "สายตาที่เฉียบคมของคุณ ทำให้คุณเป็นนักสไนเปอร์อันดับหนึ่งของโลกอนาคต"; }
+        else { title = "วิหคเพลิงอมตะ"; desc = "คุณวิวัฒนาการตัวเองในปล่องภูเขาไฟ กลายเป็นนกฟีนิกซ์ที่ไม่มีวันตาย"; }
+      }
+      // เส้นทางเสือดำ 🐅
+      else {
+        if (playerLocation === 'ป่าเวทมนตร์') { title = "เงาสังหารแห่งพงไพร"; desc = "คุณเคลื่อนไหวไร้เสียง ลอบจัดการศัตรูผู้บุกรุกป่าโดยที่พวกมันไม่ทันตั้งตัว"; }
+        else if (playerLocation === 'นครไซเบอร์') { title = "นินจาไซเบอร์"; desc = "แฮกเกอร์และนักฆ่าในร่างเดียว คุณเจาะระบบและลบตัวตนของเป้าหมายอย่างไร้ร่องรอย"; }
+        else { title = "มารเงาอัคคี"; desc = "คุณใช้เงาจากควันภูเขาไฟพรางตัว เป็นฝันร้ายของผู้ที่กล้าเหยียบย่างเข้ามา"; }
+      }
+
+      document.getElementById('endingIcon').innerText = playerAnimalIcon + " ⚔️ " + playerLocationIcon;
+      document.getElementById('endingTitle').innerText = title;
+      document.getElementById('endingDesc').innerText = desc;
+      
+      goToStep('step4');
+    }
+
+    function restartGame() {
+      playerAnimal = ""; playerLocation = "";
+      goToStep('step1');
+    }
+  </script>
+
+</body>
+</html>
