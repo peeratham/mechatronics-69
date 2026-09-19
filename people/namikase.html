@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>นายรพีพงศ์ ลิ้มชวพันธนกุล</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f1efe8;
+    font-family: "Sarabun", "Segoe UI", sans-serif;
+    padding: 24px;
+  }
+  .card {
+    position: relative;
+    width: 100%;
+    max-width: 540px;
+    background: #ffffff;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  }
+  .hero {
+    position: relative;
+    width: 100%;
+    height: 260px;
+    background: #faece7;
+    overflow: hidden;
+  }
+  .shape {
+    position: absolute;
+    border-radius: 50%;
+  }
+  .shape.circle-amber {
+    width: 140px; height: 140px;
+    top: -30px; right: -20px;
+    background: #ef9f27;
+    opacity: 0.5;
+  }
+  .shape.circle-teal {
+    width: 180px; height: 180px;
+    bottom: -60px; left: -40px;
+    background: #5dcaa5;
+    opacity: 0.45;
+  }
+  .shape.square-purple {
+    width: 90px; height: 90px;
+    bottom: 20px; right: 60px;
+    background: #7f77dd;
+    opacity: 0.4;
+    border-radius: 20px;
+    transform: rotate(18deg);
+  }
+  .shape.triangle-pink {
+    position: absolute;
+    top: 20px; left: 30px;
+    width: 0; height: 0;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    border-bottom: 55px solid #ed93b1;
+    opacity: 0.55;
+  }
+  .dot {
+    position: absolute;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+  }
+  .dot.d1 { top: 30px; left: 230px; background: #d85a30; }
+  .dot.d2 { top: 150px; right: 40px; background: #1d9e75; }
+  .dot.d3 { top: 60px; left: 120px; background: #ef9f27; }
+  .dot.d4 { bottom: 40px; left: 330px; background: #7f77dd; }
+
+  .name-block {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 20px;
+  }
+  .first-name {
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 500;
+    font-size: 46px;
+    color: #26221f;
+    margin: 0;
+    line-height: 1.2;
+  }
+  .last-name {
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 500;
+    font-size: 30px;
+    color: #5f5e5a;
+    margin: 6px 0 0;
+    line-height: 1.2;
+  }
+
+  .tags {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 20px 28px 28px;
+  }
+  .tag {
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .tag.orange { background: #faeeda; color: #854f0b; }
+  .tag.aqua   { background: #e1f5ee; color: #085041; }
+  .tag.violet { background: #eeedfe; color: #3c3489; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="hero">
+      <div class="shape circle-amber"></div>
+      <div class="shape circle-teal"></div>
+      <div class="shape square-purple"></div>
+      <div class="triangle-pink"></div>
+      <div class="dot d1"></div>
+      <div class="dot d2"></div>
+      <div class="dot d3"></div>
+      <div class="dot d4"></div>
+
+      <div class="name-block">
+        <p class="first-name">รพีพงศ์</p>
+        <p class="last-name">ลิ้มชวพันธนกุล</p>
+      </div>
+    </div>
+
+    <div class="tags">
+      <span class="tag orange">วิศวกรรม</span>
+      <span class="tag aqua">ระบบควบคุม</span>
+      <span class="tag violet">โปรแกรมมิ่ง</span>
+    </div>
+  </div>
+</body>
+</html>

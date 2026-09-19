@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>อชิตะ หนองเทา</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Noto Sans Thai', 'Sarabun', 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #fdf6f0 0%, #f7e8dd 40%, #f0d9c8 100%);
+    overflow: hidden;
+    position: relative;
+  }
+
+  body::before,
+  body::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.25;
+  }
+
+  body::before {
+    width: 320px;
+    height: 320px;
+    background: #e8b98f;
+    top: -80px;
+    left: -80px;
+  }
+
+  body::after {
+    width: 260px;
+    height: 260px;
+    background: #d98e6b;
+    bottom: -60px;
+    right: -60px;
+  }
+
+  .card {
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(6px);
+    padding: 60px 70px;
+    border-radius: 24px;
+    box-shadow: 0 20px 45px rgba(150, 90, 50, 0.18);
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+  }
+
+  .ornament {
+    font-size: 1.4rem;
+    color: #cf8f5f;
+    letter-spacing: 6px;
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 6vw, 3.4rem);
+    font-weight: 700;
+    color: #5a3823;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 6px rgba(90, 56, 35, 0.1);
+  }
+
+  .underline {
+    width: 90px;
+    height: 4px;
+    margin: 22px auto 0;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #e8b98f, #cf8f5f);
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="ornament">✦ ✦ ✦</div>
+    <h1>อชิตะ หนองเทา</h1>
+    <div class="underline"></div>
+  </div>
+</body>
+</html>
