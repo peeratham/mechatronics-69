@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>World Travel Game 🌍 - สุดยอดการเดินทางรอบโลก</title>
+<!-- Tailwind CSS for utility styling -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Google Font Inter / Kanit -->
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Canvas Confetti -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+  * {
+    font-family: 'Kanit', sans-serif;
+    user-select: none;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.6);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #60a5fa;
+  }
+
+  /* Glassmorphism Classes */
+  .glass-panel {
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .glass-card {
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .glass-card:hover {
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.3);
+    transform: translateY(-4px);
+  }
+
+  /* Animated background mesh */
+  .bg-mesh {
+    background-color: #0f172a;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.2) 0px, transparent 50%),
+      radial-gradient(at 50% 100%, rgba(168, 85, 247, 0.15) 0px, transparent 50%);
+    background-attachment: fixed;
+  }
+
+  /* Custom Glow Text */
+  .glow-text {
+    text-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
+  }
+
+  /* Stamp Animation */
+  @keyframes stampIn {
+    0% { transform: scale(3) rotate(-15deg); opacity: 0; }
+    80% { transform: scale(0.9) rotate(-12deg); opacity: 0.9; }
+    100% { transform: scale(1) rotate(-12deg); opacity: 1; }
+  }
+  .animate-stamp {
+    animation: stampIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+
+  /* Floating Animation */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  /* Ripple effect for work button */
+  .tap-btn:active {
+    transform: scale(0.95);
+  }
+
+  /* Modal Fade */
+  .modal-enter {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  .modal-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: all 0.25s ease-out;
+  }
+</style>
+</head>
+
+<body class="bg-mesh text-slate-100 min-h-screen flex flex-col justify-between overflow-x-hidden">
+
+<!-- HEADER SECTION -->
+<header class="sticky top-0 z-40 glass-panel border-b border-slate-800/80 shadow-lg">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
+    <!-- Logo & Traveler Info -->
+    <div class="flex items-center space-x-3">
+      <div class="bg-gradient-to-tr from-cyan-500 to-blue-600 p-2.5 rounded-2xl shadow-lg shadow-cyan-500/30 animate-float">
+        <i class="fa-solid fa-earth-americas text-2xl text-white"></i>
+      </div>
+      <div>
+        <h1 class="text-xl font-bold bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-300 bg-clip-text text-transparent glow-text">
+          World Travel Game
+        </h1>
+        <p class="text-xs text-slate-400 flex items-center gap-1.5">
+          <i class="fa-solid fa-passport text-amber-400"></i>
+          นักเดินทาง: <span class="text-slate-200 font-medium">นายนพรัตน์ ท้วมแก้ว</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Quick Stats & Actions Header -->
+    <div class="flex items-center gap-2 sm:gap-4 flex-wrap">
+      <!-- Audio Toggle -->
+      <button id="soundToggleBtn" onclick="toggleAudio()" class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white transition border border-slate-700/60" title="เปิด/ปิด เสียง">
+        <i id="soundIcon" class="fa-solid fa-volume-high"></i>
+      </button>
+
+      <!-- Open Passport Modal -->
+      <button onclick="openPassportModal()" class="flex items-center gap-2 px-3 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 transition text-sm font-medium">
+        <i class="fa-solid fa-book-bookmark text-amber-400"></i>
+        <span>สมุดพาสปอร์ต</span>
+      </button>
+
+      <!-- Earn Money Modal -->
+      <button onclick="openEarnModal()" class="flex items-center gap-2 px-3 py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 transition text-sm font-medium animate-pulse">
+        <i class="fa-solid fa-coins text-emerald-400"></i>
+        <span>หาเงินเดินทาง</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN CONTENT AREA -->
+<main class="max-w-7xl mx-auto px-4 py-6 w-full flex-1">
+
+  <!-- STATS BAR -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+    <!-- Money Stat -->
+    <div class="glass-card p-4 rounded-2xl flex items-center gap-4 relative overflow-hidden group">
+      <div class="absolute -right-2 -bottom-2 opacity-10 text-emerald-400 group-hover:scale-110 transition">
+        <i class="fa-solid fa-wallet text-6xl"></i>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-xl border border-emerald-500/30">
+        <i class="fa-solid fa-money-bill-wave"></i>
+      </div>
+      <div>
+        <p class="text-xs text-slate-400 font-medium">เงินคงเหลือ</p>
+        <h3 class="text-2xl font-bold text-emerald-400 tracking-wide" id="money">10,000 ฿</h3>
+      </div>
+    </div>
+
+    <!-- Score Stat -->
+    <div class="glass-card p-4 rounded-2xl flex items-center gap-4 relative overflow-hidden group">
+      <div class="absolute -right-2 -bottom-2 opacity-10 text-amber-400 group-hover:scale-110 transition">
+        <i class="fa-solid fa-star text-6xl"></i>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400 text-xl border border-amber-500/30">
+        <i class="fa-solid fa-award"></i>
+      </div>
+      <div>
+        <p class="text-xs text-slate-400 font-medium">คะแนนประสบการณ์</p>
+        <h3 class="text-2xl font-bold text-amber-300 tracking-wide" id="score">0 PTS</h3>
+      </div>
+    </div>
+
+    <!-- Countries Visited Stat -->
+    <div class="glass-card p-4 rounded-2xl flex items-center gap-4 relative overflow-hidden group">
+      <div class="absolute -right-2 -bottom-2 opacity-10 text-cyan-400 group-hover:scale-110 transition">
+        <i class="fa-solid fa-globe text-6xl"></i>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center text-cyan-400 text-xl border border-cyan-500/30">
+        <i class="fa-solid fa-flag"></i>
+      </div>
+      <div>
+        <p class="text-xs text-slate-400 font-medium">ประเทศที่สืบค้น</p>
+        <h3 class="text-2xl font-bold text-cyan-300 tracking-wide" id="countryCount">1 / 12</h3>
+      </div>
+    </div>
+
+    <!-- Current Location Stat -->
+    <div class="glass-card p-4 rounded-2xl flex items-center gap-4 relative overflow-hidden group">
+      <div class="absolute -right-2 -bottom-2 opacity-10 text-indigo-400 group-hover:scale-110 transition">
+        <i class="fa-solid fa-plane-arrival text-6xl"></i>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400 text-xl border border-indigo-500/30">
+        <i class="fa-solid fa-location-dot"></i>
+      </div>
+      <div class="overflow-hidden">
+        <p class="text-xs text-slate-400 font-medium">ตำแหน่งปัจจุบัน</p>
+        <h3 class="text-lg font-bold text-indigo-300 truncate" id="current">🇹🇭 ไทย</h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROGRESS BAR FOR WORLD COMPLETION -->
+  <div class="glass-card p-4 rounded-2xl mb-8">
+    <div class="flex justify-between items-center mb-2">
+      <span class="text-xs font-semibold text-slate-300 flex items-center gap-2">
+        <i class="fa-solid fa-compass text-cyan-400"></i> ความคืบหน้าการเที่ยวรอบโลก
+      </span>
+      <span class="text-xs font-bold text-cyan-400" id="progressPercent">0%</span>
+    </div>
+    <div class="w-full bg-slate-800 rounded-full h-3 p-0.5 border border-slate-700/50">
+      <div id="progressBar" class="bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 h-2 rounded-full transition-all duration-500 shadow-md shadow-cyan-500/50" style="width: 0%"></div>
+    </div>
+  </div>
+
+  <!-- WORLD MAP PAGE -->
+  <div id="worldPage" class="transition-all duration-300">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-map-location-dot text-cyan-400"></i> เลือกประเทศปลายทาง
+        </h2>
+        <p class="text-sm text-slate-400">เลือกประเทศที่คุณต้องการเดินทางเพื่อไปสำรวจสถานที่ท่องเที่ยวชื่อดัง</p>
+      </div>
+    </div>
+
+    <!-- Country Grid -->
+    <div id="countryGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+      <!-- Dynamic populated country buttons -->
+    </div>
+  </div>
+
+  <!-- TOURIST SPOT PAGE (HIDDEN BY DEFAULT) -->
+  <div id="touristPage" class="hidden transition-all duration-300">
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+      <button onclick="backToWorld()" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition text-sm font-medium">
+        <i class="fa-solid fa-arrow-left"></i> กลับหน้าแผนที่โลก
+      </button>
+      <h2 id="countryTitle" class="text-2xl font-bold text-white flex items-center gap-2">
+        <!-- Country Title populated dynamically -->
+      </h2>
+    </div>
+
+    <!-- Tourist Places Cards Grid -->
+    <div id="placesGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Dynamic places cards -->
+    </div>
+  </div>
+
+  <!-- TRAVEL LOG / NOTIFICATION BOARD -->
+  <div class="mt-8 glass-card rounded-2xl p-5 relative overflow-hidden">
+    <div class="flex items-center gap-3 mb-3 border-b border-slate-700/60 pb-3">
+      <div class="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center text-amber-400 text-sm">
+        <i class="fa-solid fa-book-open"></i>
+      </div>
+      <h3 class="font-bold text-slate-200">บันทึกไดอารี่การเดินทาง</h3>
+    </div>
+    <div class="flex items-start gap-3">
+      <i class="fa-solid fa-quote-left text-cyan-500/40 text-xl mt-1"></i>
+      <p id="message" class="text-slate-300 text-base leading-relaxed py-1">
+        ยินดีต้อนรับสู่อาณาจักรการเดินทาง World Travel Game 🌍 ออกสำรวจและสะสมความทรงจำรอบโลกกันเลย!
+      </p>
+    </div>
+  </div>
+</main>
+
+<!-- MODAL 1: EARN MONEY / FREELANCE & QUIZ -->
+<div id="earnModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+  <div class="glass-panel w-full max-w-lg rounded-3xl p-6 relative border border-slate-700/80 shadow-2xl">
+    <button onclick="closeEarnModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition">
+      <i class="fa-solid fa-xmark text-lg"></i>
+    </button>
+
+    <div class="flex items-center gap-3 mb-4">
+      <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-2xl">
+        <i class="fa-solid fa-laptop-code"></i>
+      </div>
+      <div>
+        <h3 class="text-xl font-bold text-white">ศูนย์ทำงานหาค่าเดินทาง 💼</h3>
+        <p class="text-xs text-slate-400">ทำงานฟรีแลนซ์ หรือตอบคำถามทายปัญหาเพื่อรับโบนัสพิเศษ!</p>
+      </div>
+    </div>
+
+    <!-- Tabs inside Modal -->
+    <div class="flex border-b border-slate-800 mb-4">
+      <button id="tabWorkBtn" onclick="switchEarnTab('work')" class="flex-1 py-2 text-sm font-semibold text-emerald-400 border-b-2 border-emerald-500">
+        <i class="fa-solid fa-hand-pointer mr-1"></i> คลิกทำงานฟรีแลนซ์
+      </button>
+      <button id="tabQuizBtn" onclick="switchEarnTab('quiz')" class="flex-1 py-2 text-sm font-semibold text-slate-400 hover:text-slate-200">
+        <i class="fa-solid fa-circle-question mr-1"></i> ตอบควิซท่องเที่ยว
+      </button>
+    </div>
+
+    <!-- Tab Content 1: Freelance Clicker -->
+    <div id="tabWork" class="space-y-4">
+      <div class="bg-slate-900/80 p-4 rounded-2xl text-center border border-slate-800">
+        <p class="text-xs text-slate-400 mb-1">รายได้จากการคลิกทำงาน</p>
+        <p class="text-sm font-medium text-emerald-400">+500 บาท / การคลิกงาน 1 ครั้ง</p>
+      </div>
+
+      <button onclick="doWork()" class="tap-btn w-full py-6 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-600 to-emerald-600 text-white font-bold text-lg shadow-xl shadow-emerald-500/20 hover:brightness-110 active:scale-95 transition flex flex-col items-center justify-center gap-2">
+        <i class="fa-solid fa-laptop-code text-3xl animate-bounce"></i>
+        <span>คลิกตรงนี้เพื่อรับงาน Freelance!</span>
+      </button>
+    </div>
+
+    <!-- Tab Content 2: Travel Quiz Trivia -->
+    <div id="tabQuiz" class="hidden space-y-4">
+      <div id="quizContainer" class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800">
+        <!-- Dynamic quiz question -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 2: PASSPORT & STAMP BOOK -->
+<div id="passportModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+  <div class="glass-panel w-full max-w-3xl rounded-3xl p-6 relative border border-slate-700/80 shadow-2xl max-h-[85vh] flex flex-col">
+    <button onclick="closePassportModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition">
+      <i class="fa-solid fa-xmark text-lg"></i>
+    </button>
+
+    <div class="flex items-center gap-3 mb-4">
+      <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 text-2xl">
+        <i class="fa-solid fa-passport"></i>
+      </div>
+      <div>
+        <h3 class="text-xl font-bold text-white">สมุดตราประทับพาสปอร์ต 📖</h3>
+        <p class="text-xs text-slate-400">บันทึกตราประทับและของที่ระลึกจากทุกมุมโลกที่คุณเคยเดินทางไปเยือน</p>
+      </div>
+    </div>
+
+    <!-- Stamp Collection Grid -->
+    <div class="overflow-y-auto pr-2 flex-1">
+      <div id="passportStampsGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 py-2">
+        <!-- Dynamic Stamp Cards -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="border-t border-slate-800/80 glass-panel mt-12 py-4">
+  <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+    World Travel Game © 2026 • สร้างสรรค์และพัฒนาเพื่อการเดินทางท่องโลกเสมือนจริง ✈️
+  </div>
+</footer>
+
+<script>
+/* =========================================================
+   1. GAME DATA & STATE MANAGEMENT
+   ========================================================= */
+const data = {
+  "ไทย": {
+    flag: "🇹🇭",
+    places: [
+      { name: "วัดพระแก้ว", icon: "🏯", description: "สถานที่สำคัญใจกลางกรุงเทพฯ อัญมณีแห่งสถาปัตยกรรมไทย", reward: 100, cost: 500, souvenir: "🎁 พระแก้วจำลอง" },
+      { name: "ดอยอินทนนท์", icon: "⛰️", description: "ยอดเขาที่สูงที่สุดในประเทศไทย อากาศเย็นสบายตลอดปี", reward: 120, cost: 700, souvenir: "🎁 ชาดอยอินทนนท์" },
+      { name: "ภูเก็ต", icon: "🏝️", description: "ไข่มุกแห่งอันดามัน ทะเลและชายหาดสวยงามระดับโลก", reward: 150, cost: 900, souvenir: "🎁 เปลือกหอยอันดามัน" }
+    ]
+  },
+  "ญี่ปุ่น": {
+    flag: "🇯🇵",
+    places: [
+      { name: "ภูเขาไฟฟูจิ", icon: "🗻", description: "ภูเขาไฟทรงกรวยสมบูรณ์แบบ สัญลักษณ์แห่งแดนอาทิตย์อุทัย", reward: 200, cost: 1500, souvenir: "🎁 ตุ๊กตาดารุมา" },
+      { name: "โตเกียว", icon: "🏙️", description: "มหานครที่ไม่เคยหลับใหล ศูนย์รวมเทคโนโลยีและแฟชั่น", reward: 180, cost: 1300, souvenir: "🎁 โมเดลโตเกียวทาวเวอร์" },
+      { name: "วัดคิโยมิสึ", icon: "⛩️", description: "วัดน้ำใสอันเก่าแก่บนเนินเขา เมืองเกียวโต", reward: 220, cost: 1700, souvenir: "🎁 เครื่องรางโชคดีเกียวโต" }
+    ]
+  },
+  "เกาหลีใต้": {
+    flag: "🇰🇷",
+    places: [
+      { name: "โซล", icon: "🏙️", description: "เมืองหลวงศูนย์กลางความบันเทิง K-Pop และแฟชั่นทันสมัย", reward: 180, cost: 1300, souvenir: "🎁 ชุดฮันบกจิ๋ว" },
+      { name: "พระราชวังเคียงบกกุง", icon: "🏯", description: "พระราชวังหลวงโบราณ ยิ่งใหญ่อลังการที่สุดในโซล", reward: 200, cost: 1500, souvenir: "🎁 พัดเกาหลีโบราณ" },
+      { name: "เกาะเชจู", icon: "🌋", description: "เกาะภูเขาไฟธรรมชาติ มรดกโลกยอดนิยมของเกาหลี", reward: 250, cost: 1800, souvenir: "🎁 หินหิมะทอลฮารูบัง" }
+    ]
+  },
+  "จีน": {
+    flag: "🇨🇳",
+    places: [
+      { name: "กำแพงเมืองจีน", icon: "🏯", description: "สิ่งมหัศจรรย์ของโลกที่ทอดยาวผ่านเทือกเขานับพันไมล์", reward: 250, cost: 1800, souvenir: "🎁 รูปปั้นแพนด้าจิ๋ว" },
+      { name: "เซี่ยงไฮ้", icon: "🏙️", description: "มหานครศูนย์กลางเศรษฐกิจและตึกสูงระฟ้าทันสมัย", reward: 180, cost: 1400, souvenir: "🎁 ใบชาหลงจิ่ง" },
+      { name: "พระราชวังต้องห้าม", icon: "🏯", description: "พระราชวังประวัติศาสตร์ใจกลางปักกิ่ง ความงดงามของจักรพรรดิ", reward: 220, cost: 1600, souvenir: "🎁 โคมไฟจีนสีแดง" }
+    ]
+  },
+  "ฝรั่งเศส": {
+    flag: "🇫🇷",
+    places: [
+      { name: "หอไอเฟล", icon: "🗼", description: "สถาปัตยกรรมโครงเหล็กแลนด์มาร์กชื่อดังที่สุดในปารีส", reward: 300, cost: 3000, souvenir: "🎁 พวงกุญแจหอไอเฟล" },
+      { name: "พิพิธภัณฑ์ลูฟวร์", icon: "🏛️", description: "พิพิธภัณฑ์ศิลปะระดับโลก ที่เก็บรักษาภาพวาดโมนาลิซ่า", reward: 280, cost: 2800, souvenir: "🎁 โปสการ์ดภาพโมนาลิซ่า" },
+      { name: "พระราชวังแวร์ซาย", icon: "🏰", description: "พระราชวังที่หรูหราอลังการที่สุดในประวัติศาสตร์ยุโรป", reward: 300, cost: 3000, souvenir: "🎁 น้ำหอมปารีส" }
+    ]
+  },
+  "อังกฤษ": {
+    flag: "🇬🇧",
+    places: [
+      { name: "บิ๊กเบน", icon: "🕰️", description: "หอนาฬิกาพระราชวังเวสต์มินสเตอร์ อันเป็นสัญลักษณ์แห่งลอนดอน", reward: 300, cost: 3200, souvenir: "🎁 โมเดลรถบัสสองชั้น" },
+      { name: "พระราชวังบักกิงแฮม", icon: "🏰", description: "พระราชวังที่ประทับของราชวงศ์อังกฤษ ยิ่งใหญ่ทรงคุณค่า", reward: 280, cost: 3000, souvenir: "🎁 ชาอังกฤษการ์ด" },
+      { name: "ลอนดอนอาย", icon: "🎡", description: "ชิงช้าสวรรค์ยักษ์ริมแม่น้ำเทมส์ ชมทัศนียภาพทั่วลอนดอน", reward: 250, cost: 2800, souvenir: "🎁 หมวกทหารมหาดเล็ก" }
+    ]
+  },
+  "อิตาลี": {
+    flag: "🇮🇹",
+    places: [
+      { name: "โคลอสเซียม", icon: "🏟️", description: "สนามกีฬากลางแจ้งโบราณ สิ่งมหัศจรรย์ยุคโรมัน", reward: 300, cost: 2800, souvenir: "🎁 หน้ากากเวนิส" },
+      { name: "หอเอนเมืองปิซา", icon: "🏛️", description: "หอคอยหินอ่อนเอนโค้ง สิ่งมหัศจรรย์ทางสถาปัตยกรรม", reward: 280, cost: 2600, souvenir: "🎁 น้ำมันมะกอกอิตาเลียน" },
+      { name: "เวนิส", icon: "🚤", description: "เมืองแห่งสายน้ำและเรือกอนโดลาสุดโรแมนติก", reward: 320, cost: 3000, souvenir: "🎁 แก้วเจียระไน มูราโน่" }
+    ]
+  },
+  "เยอรมนี": {
+    flag: "🇩🇪",
+    places: [
+      { name: "ประตูบรันเดนบูร์ก", icon: "🏛️", description: "สัญลักษณ์แห่งเอกภาพและความเป็นมาของกรุงเบอร์ลิน", reward: 280, cost: 2700, souvenir: "🎁 แก้วเบียร์เยอรมัน" },
+      { name: "ปราสาทนอยชวานสไตน์", icon: "🏰", description: "ปราสาทเทพนิยายบนเทือกเขาแอลป์ ต้นแบบปราสาทดิสนีย์", reward: 320, cost: 3000, souvenir: "🎁 นาฬิกากุ๊กกูไม้จำลอง" },
+      { name: "เบอร์ลิน", icon: "🏙️", description: "เมืองหลวงที่เต็มไปด้วยประวัติศาสตร์และศิลปะร่วมสมัย", reward: 250, cost: 2500, souvenir: "🎁 ชิ้นส่วนกำแพงเบอร์ลิน" }
+    ]
+  },
+  "สหรัฐอเมริกา": {
+    flag: "🇺🇸",
+    places: [
+      { name: "เทพีเสรีภาพ", icon: "🗽", description: "อนุสาวรีย์สัญลักษณ์แห่งอิสรภาพและมิตรภาพที่นิวยอร์ก", reward: 400, cost: 4000, souvenir: "🎁 โมเดลเทพีเสรีภาพ" },
+      { name: "ไทม์สแควร์", icon: "🌃", description: "ย่านธุรกิจและสี่แยกไฟนีออนชื่อดังระดับโลกในมหานครนิวยอร์ก", reward: 350, cost: 3800, souvenir: "🎁 ป้ายไทม์สแควร์จำลอง" },
+      { name: "แกรนด์แคนยอน", icon: "🏜️", description: "หุบเขาสีส้มขนาดใหญ่ตระการตาที่สร้างโดยธรรมชาตินับล้านปี", reward: 450, cost: 4500, souvenir: "🎁 หินทรายแกรนด์แคนยอน" }
+    ]
+  },
+  "แคนาดา": {
+    flag: "🇨🇦",
+    places: [
+      { name: "น้ำตกไนแองการา", icon: "🌊", description: "หนึ่งในน้ำตกทรงพลังและสวยงามที่สุดในโลก", reward: 400, cost: 4000, souvenir: "🎁 เมเปิ้ลไซรัปบริสุทธิ์" },
+      { name: "โตรอนโต", icon: "🏙️", description: "เมืองใหญ่หลากวัฒนธรรม พร้อมหอคอย CN Tower สูงเสียดฟ้า", reward: 350, cost: 3500, souvenir: "🎁 เสื้อยืดลายใบเมเปิ้ล" },
+      { name: "อุทยานแบมฟ์", icon: "🏔️", description: "ทะเลสาบสีฟ้าครามและเทือกเขาร็อกกี้อันอุดมสมบูรณ์", reward: 450, cost: 4200, souvenir: "🎁 หินแร่ควอตซ์จากเทือกเขา" }
+    ]
+  },
+  "บราซิล": {
+    flag: "🇧🇷",
+    places: [
+      { name: "รูปปั้นพระเยซู", icon: "🗿", description: "Christ the Redeemer ยอดเขาคอร์โควาโด ริโอเดจาเนโร", reward: 400, cost: 4500, souvenir: "🎁 ลูกฟุตบอลบราซิล" },
+      { name: "ชายหาดโคปาคาบานา", icon: "🏖️", description: "ชายหาดโค้งสวยงามระดับโลก บรรยากาศสนุกสนาน", reward: 350, cost: 4000, souvenir: "🎁 สร้อยหอยบราซิล" },
+      { name: "ป่าอเมซอน", icon: "🌳", description: "ป่าฝนเขตร้อนที่ใหญ่ที่สุดในโลก ปอดของโลกใบนี้", reward: 500, cost: 5000, souvenir: "🎁 ขนนกอเมซอนแฟนซี" }
+    ]
+  },
+  "ออสเตรเลีย": {
+    flag: "🇦🇺",
+    places: [
+      { name: "ซิดนีย์โอเปร่าเฮาส์", icon: "🎭", description: "สถาปัตยกรรมรูปทรงใบเรือ แลนด์มาร์กสำคัญระดับโลก", reward: 400, cost: 3500, souvenir: "🎁 ตุ๊กตาจิ๋วโคอาล่า" },
+      { name: "หาดบอนได", icon: "🏖️", description: "หาดโต้คลื่นชื่อดังที่มีชื่อเสียงระดับโลกในซิดนีย์", reward: 350, cost: 3200, souvenir: "🎁 พวงกุญแจจิ๋วจิ๊กซอว์บูมเมอแรง" },
+      { name: "เกรตแบร์ริเออร์รีฟ", icon: "🐠", description: "แนวปะการังที่ใหญ่ที่สุดในโลก ชมสัตว์ทะเลใต้ท้องทะเลลึก", reward: 500, cost: 4500, souvenir: "🎁 เปลือกปะการังเรซิน" }
+    ]
+  }
+};
+
+// Quiz Data for Earning
+const quizData = [
+  { question: "เมืองหลวงของประเทศญี่ปุ่นคือเมืองใด?", choices: ["โอซาก้า", "โตเกียว", "เกียวโต", "ฮอกไกโด"], correct: 1 },
+  { question: "หอไอเฟลตั้งอยู่ในเมืองและประเทศใด?", choices: ["ลอนดอน, อังกฤษ", "โรม, อิตาลี", "ปารีส, ฝรั่งเศส", "เบอร์ลิน, เยอรมนี"], correct: 2 },
+  { question: "สถานที่ใดเป็นสิ่งมหัศจรรย์ของโลกในประเทศจีน?", choices: ["กำแพงเมืองจีน", "นครเพตรา", "โคลอสเซียม", "มาชูปิกชู"], correct: 0 },
+  { question: "สัญลักษณ์สำคัญประจำประเทศออสเตรเลียคือสัตว์ชนิดใด?", choices: ["แพนด้า", "จิงโจ้", "เสือโคร่ง", "นกกีวี"], correct: 1 },
+  { question: "รูปปั้นเทพีเสรีภาพตั้งอยู่ในมหานครใดของสหรัฐอเมริกา?", choices: ["ลอสแอนเจลิส", "ชิคาโก", "นิวยอร์ก", "ไมอามี"], correct: 2 }
+];
+
+// User Progress Variables
+let money = 10000;
+let score = 0;
+let currentCountry = "ไทย";
+let visitedCountries = ["ไทย"];
+let visitedPlaces = [];
+let audioEnabled = true;
+
+/* =========================================================
+   2. WEB AUDIO SYNTHESIZER (SOUND EFFECTS)
+   ========================================================= */
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+
+function playSound(type) {
+  if (!audioEnabled) return;
+  try {
+    if (!audioCtx) audioCtx = new AudioContext();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    const now = audioCtx.currentTime;
+
+    if (type === 'click') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(400, now);
+      osc.frequency.exponentialRampToValueAtTime(800, now + 0.08);
+      gain.gain.setValueAtTime(0.15, now);
+      gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
+      osc.start(now);
+      osc.stop(now + 0.08);
+    } else if (type === 'travel') {
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(200, now);
+      osc.frequency.exponentialRampToValueAtTime(600, now + 0.3);
+      gain.gain.setValueAtTime(0.2, now);
+      gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
+      osc.start(now);
+      osc.stop(now + 0.3);
+    } else if (type === 'coins') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(987.77, now); // B5
+      osc.frequency.setValueAtTime(1318.51, now + 0.08); // E6
+      gain.gain.setValueAtTime(0.2, now);
+      gain.gain.linearRampToValueAtTime(0.01, now + 0.25);
+      osc.start(now);
+      osc.stop(now + 0.25);
+    } else if (type === 'win') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(523.25, now); // C5
+      osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+      osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+      osc.frequency.setValueAtTime(1046.50, now + 0.3); // C6
+      gain.gain.setValueAtTime(0.25, now);
+      gain.gain.linearRampToValueAtTime(0.01, now + 0.5);
+      osc.start(now);
+      osc.stop(now + 0.5);
+    }
+  } catch (e) {
+    console.log("Audio not supported or blocked", e);
+  }
+}
+
+function toggleAudio() {
+  audioEnabled = !audioEnabled;
+  const icon = document.getElementById("soundIcon");
+  if (audioEnabled) {
+    icon.className = "fa-solid fa-volume-high";
+    playSound('click');
+  } else {
+    icon.className = "fa-solid fa-volume-xmark text-red-400";
+  }
+}
+
+/* =========================================================
+   3. RENDERING & UI UPDATES
+   ========================================================= */
+function updateUI() {
+
+  document.getElementById("money").innerText = money.toLocaleString() + " ฿";
+  document.getElementById("score").innerText = score.toLocaleString() + " PTS";
+  document.getElementById("countryCount").innerText = `${visitedCountries.length} / 12`;
+  
+  const flag = data[currentCountry] ? data[currentCountry].flag : "🌍";
+  document.getElementById("current").innerText = `${flag} ${currentCountry}`;
+
+  // Calculate percentage total places visited (12 countries * 3 = 36 total)
+  const totalPlaces = 36;
+  const progressPercent = Math.round((visitedPlaces.length / totalPlaces) * 100);
+  document.getElementById("progressPercent").innerText = progressPercent + "%";
+  document.getElementById("progressBar").style.width = progressPercent + "%";
+
+  renderWorldGrid();
+}
+
+function renderWorldGrid() {
+  const grid = document.getElementById("countryGrid");
+  let html = "";
+
+  Object.keys(data).forEach(country => {
+    const countryData = data[country];
+    const isVisited = visitedCountries.includes(country);
+    
+    // Count visited places in this country
+    let countryPlacesVisited = 0;
+    countryData.places.forEach((p, idx) => {
+      if (visitedPlaces.includes(`${country}-${idx}`)) countryPlacesVisited++;
+    });
+
+    html += `
+      <button onclick="openCountry('${country}')" class="glass-card p-4 rounded-2xl flex flex-col items-center justify-between text-center relative overflow-hidden group hover:border-cyan-400/50 transition">
+        ${isVisited ? `<span class="absolute top-2 right-2 text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-1.5 py-0.5 rounded-full font-bold">เคยเยือน</span>` : ''}
+        <div class="text-4xl mb-2 group-hover:scale-125 transition duration-300 transform">
+          ${countryData.flag}
+        </div>
+        <div class="w-full">
+          <h4 class="font-bold text-slate-100 text-sm mb-1 group-hover:text-cyan-300">${country}</h4>
+          <p class="text-[11px] text-slate-400">สำรวจแล้ว ${countryPlacesVisited}/3</p>
+        </div>
+      </button>
+    `;
+  });
+
+  grid.innerHTML = html;
+}
+
+/* =========================================================
+   4. NAVIGATION & COUNTRY SPOTS
+   ========================================================= */
+function openCountry(country) {
+  playSound('travel');
+  currentCountry = country;
+
+  triggerRandomEvent();
+
+  document.getElementById("worldPage").classList.add("hidden");
+  document.getElementById("touristPage").classList.remove("hidden");
+
+  const countryData = data[country];
+  document.getElementById("countryTitle").innerHTML = `
+    <span>${countryData.flag}</span> สถานที่ท่องเที่ยวใน ${country}
+  `;
+
+  renderPlacesGrid(country);
+  updateUI();
+}
+
+function backToWorld() {
+  playSound('click');
+  document.getElementById("touristPage").classList.add("hidden");
+  document.getElementById("worldPage").classList.remove("hidden");
+}
+
+function renderPlacesGrid(country) {
+  const container = document.getElementById("placesGrid");
+  let html = "";
+
+  data[country].places.forEach((place, index) => {
+    const placeID = `${country}-${index}`;
+    const isVisited = visitedPlaces.includes(placeID);
+
+    html += `
+      <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between border border-slate-700/60 hover:border-cyan-500/40 transition">
+        <div>
+          <!-- Icon Banner -->
+          <div class="bg-gradient-to-br from-slate-800 to-slate-900 h-36 flex items-center justify-center text-6xl relative border-b border-slate-800">
+            <span class="filter drop-shadow-lg">${place.icon}</span>
+            ${isVisited ? `
+              <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-[2px] flex items-center justify-center">
+                <span class="bg-emerald-500 text-slate-950 font-extrabold px-3 py-1 rounded-full text-xs shadow-lg flex items-center gap-1 animate-stamp">
+                  <i class="fa-solid fa-check"></i> เที่ยวแล้ว
+                </span>
+              </div>
+            ` : ''}
+          </div>
+
+          <!-- Spot Information -->
+          <div class="p-5">
+            <h3 class="text-lg font-bold text-white mb-1 flex items-center justify-between">
+              <span>${place.name}</span>
+            </h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-4 min-h-[36px]">${place.description}</p>
+            
+            <div class="grid grid-cols-2 gap-2 text-xs mb-4">
+              <div class="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
+                <span class="text-slate-400 block">ค่าเที่ยว</span>
+                <span class="text-emerald-400 font-bold text-sm">${place.cost.toLocaleString()} ฿</span>
+              </div>
+              <div class="bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
+                <span class="text-slate-400 block">รางวัลคะแนน</span>
+                <span class="text-amber-300 font-bold text-sm">+${place.reward} PTS</span>
+              </div>
+            </div>
+            
+            <div class="text-[11px] text-indigo-300 bg-indigo-500/10 border border-indigo-500/20 p-2 rounded-xl mb-4 flex items-center gap-1.5">
+              <i class="fa-solid fa-gift text-indigo-400"></i>
+              <span>ของที่ระลึก: ${place.souvenir}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Button -->
+        <div class="px-5 pb-5">
+          <button 
+            onclick="visitPlace('${country}', ${index})"
+            class="w-full py-3 rounded-xl font-bold transition flex items-center justify-center gap-2 ${
+              isVisited 
+                ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700/50' 
+                : 'bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 hover:brightness-110 text-white shadow-lg shadow-indigo-500/25 active:scale-95'
+            }"
+            ${isVisited ? 'disabled' : ''}
+          >
+            ${isVisited ? `<i class="fa-solid fa-circle-check"></i> เคยไปเที่ยวแล้ว` : `<i class="fa-solid fa-plane-departure"></i> ออกเดินทางไปเที่ยว (${place.cost.toLocaleString()} ฿)`}
+          </button>
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
+/* =========================================================
+   5. VISITING LOGIC & RANDOM EVENTS
+   ========================================================= */
+function visitPlace(country, index) {
+  const place = data[country].places[index];
+  const placeID = `${country}-${index}`;
+
+  if (visitedPlaces.includes(placeID)) {
+    showMessage("คุณเคยเดินทางท่องเที่ยวสถานที่นี้แล้ว!");
+    return;
+  }
+
+  if (money < place.cost) {
+    playSound('click');
+    showMessage(`❌ เงินไม่พอสำหรับการท่องเที่ยว ${place.name}! ต้องการอีก ${(place.cost - money).toLocaleString()} บาท (ลองกดปุ่ม 'หาเงินเดินทาง' มุมขวาบน)`);
+    return;
+  }
+
+  // Deduct Money and Add Score
+  money -= place.cost;
+  score += place.reward;
+  visitedPlaces.push(placeID);
+
+  if (!visitedCountries.includes(country)) {
+    visitedCountries.push(country);
+  }
+
+  playSound('win');
+  
+  // Confetti Animation
+  confetti({
+    particleCount: 80,
+    spread: 60,
+    origin: { y: 0.7 }
+  });
+
+  showMessage(`🎉 ยินดีด้วย! คุณได้เดินทางเยือน "${place.name}" ในประเทศ${country} สำเร็จ! ได้รับ +${place.reward} คะแนน และปลดล็อกของที่ระลึก: ${place.souvenir}`);
+
+  updateUI();
+  renderPlacesGrid(country);
+  checkWin();
+}
+
+function triggerRandomEvent() {
+  // 30% chance to trigger random travel event
+  if (Math.random() < 0.3) {
+    const events = [
+      { text: "🧳 คุณเจอประเป๋าสตางค์หล่นที่สนามบิน! +1,500 บาท", amount: 1500 },
+      { text: "✈️ สายการบินมอบส่วนลดตั๋วเดินทางพิเศษ! +1,000 บาท", amount: 1000 },
+      { text: "☕ คุณอุดหนุนคาเฟ่ท้องถิ่นและได้ส่วนลดโบนัส! +500 บาท", amount: 500 },
+      { text: "🚕 จ่ายค่าแท็กซี่เดินทางเข้าเมือง -400 บาท", amount: -400 }
+    ];
+
+    const ev = events[Math.floor(Math.random() * events.length)];
+    money += ev.amount;
+    if (money < 0) money = 0;
+
+    setTimeout(() => {
+      showMessage(`⚡ เหตุการณ์สุ่มระหว่างเดินทาง: ${ev.text}`);
+      updateUI();
+    }, 400);
+  }
+}
+
+function showMessage(text) {
+  document.getElementById("message").innerText = text;
+}
+
+function checkWin() {
+  if (visitedPlaces.length >= 36) {
+    playSound('win');
+    confetti({
+      particleCount: 200,
+      spread: 100,
+      origin: { y: 0.5 }
+    });
+    showMessage("🏆 สุดยอดความสำเร็จระดับโลก! คุณเดินทางท่องเที่ยวครบทั้ง 36 สถานที่ทั่วโลกแล้ว! นายนพรัตน์ ท้วมแก้ว คุณคือสุดยอดนักเดินทางแห่งยุค! 🌍🎉");
+  }
+}
+
+/* =========================================================
+   6. EARN MONEY & QUIZ SYSTEM
+   ========================================================= */
+function openEarnModal() {
+  playSound('click');
+  document.getElementById("earnModal").classList.remove("hidden");
+  renderQuizQuestion();
+}
+
+function closeEarnModal() {
+  playSound('click');
+  document.getElementById("earnModal").classList.add("hidden");
+}
+
+function switchEarnTab(tab) {
+  playSound('click');
+  if (tab === 'work') {
+    document.getElementById("tabWork").classList.remove("hidden");
+    document.getElementById("tabQuiz").classList.add("hidden");
+    document.getElementById("tabWorkBtn").className = "flex-1 py-2 text-sm font-semibold text-emerald-400 border-b-2 border-emerald-500";
+    document.getElementById("tabQuizBtn").className = "flex-1 py-2 text-sm font-semibold text-slate-400 hover:text-slate-200";
+  } else {
+    document.getElementById("tabWork").classList.add("hidden");
+    document.getElementById("tabQuiz").classList.remove("hidden");
+    document.getElementById("tabWorkBtn").className = "flex-1 py-2 text-sm font-semibold text-slate-400 hover:text-slate-200";
+    document.getElementById("tabQuizBtn").className = "flex-1 py-2 text-sm font-semibold text-emerald-400 border-b-2 border-emerald-500";
+  }
+}
+
+function doWork() {
+  money += 500;
+  playSound('coins');
+  updateUI();
+  showMessage("💻 คุณรับงาน Freelance สำเร็จ! ได้รับค่าตอบแทน +500 บาท");
+}
+
+let currentQuizIdx = 0;
+
+function renderQuizQuestion() {
+  const quiz = quizData[currentQuizIdx];
+  const container = document.getElementById("quizContainer");
+
+  let choicesHTML = "";
+  quiz.choices.forEach((choice, idx) => {
+    choicesHTML += `
+      <button onclick="answerQuiz(${idx})" class="w-full text-left p-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white transition border border-slate-700/60 text-sm font-medium">
+        ${idx + 1}. ${choice}
+      </button>
+    `;
+  });
+
+  container.innerHTML = `
+    <p class="text-xs text-amber-400 font-bold mb-1">คำถามข้อที่ ${currentQuizIdx + 1} / ${quizData.length} (ตอบถูกรับ +2,000 ฿)</p>
+    <h4 class="text-slate-100 font-bold text-base mb-4">${quiz.question}</h4>
+    <div class="space-y-2">${choicesHTML}</div>
+  `;
+}
+
+function answerQuiz(selectedIdx) {
+  const quiz = quizData[currentQuizIdx];
+  if (selectedIdx === quiz.correct) {
+    money += 2000;
+    score += 50;
+    playSound('coins');
+    showMessage(`🎯 ถูกต้อง! คุณได้รับรางวัลโบนัสพิเศษ +2,000 บาท และ +50 คะแนน!`);
+  } else {
+    playSound('click');
+    showMessage(`❌ คำตอบยังไม่ถูกต้อง! ลองตอบคำถามข้อถัดไปนะ`);
+  }
+
+  currentQuizIdx = (currentQuizIdx + 1) % quizData.length;
+  updateUI();
+  renderQuizQuestion();
+}
+
+/* =========================================================
+   7. PASSPORT & STAMP BOOK MODAL
+   ========================================================= */
+function openPassportModal() {
+  playSound('click');
+  const container = document.getElementById("passportStampsGrid");
+  let html = "";
+
+  Object.keys(data).forEach(country => {
+    const isCountryVisited = visitedCountries.includes(country);
+    const countryData = data[country];
+
+    let souvenirsHTML = "";
+    countryData.places.forEach((p, idx) => {
+      const placeID = `${country}-${idx}`;
+      if (visitedPlaces.includes(placeID)) {
+        souvenirsHTML += `<div class="text-[10px] bg-slate-900/80 p-1 rounded border border-amber-500/30 text-amber-300 mt-1">${p.souvenir}</div>`;
+      }
+    });
+
+    html += `
+      <div class="glass-card p-3 rounded-2xl flex flex-col items-center justify-between text-center relative border ${
+        isCountryVisited ? 'border-amber-500/40 bg-amber-500/5' : 'border-slate-800 opacity-60'
+      }">
+        <div class="text-3xl mb-1">${countryData.flag}</div>
+        <h4 class="font-bold text-slate-200 text-xs">${country}</h4>
+        
+        ${isCountryVisited ? `
+          <div class="my-2 border border-dashed border-amber-400/50 p-1.5 rounded-full rotate-[-12deg] animate-stamp">
+            <span class="text-[9px] font-black tracking-widest uppercase text-amber-400">PASSPORT STAMPED</span>
+          </div>
+          <div class="w-full">${souvenirsHTML}</div>
+        ` : `
+          <div class="my-3 text-[10px] text-slate-500 flex items-center gap-1">
+            <i class="fa-solid fa-lock"></i> ยังไม่เคยปลดล็อก
+          </div>
+        `}
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+  document.getElementById("passportModal").classList.remove("hidden");
+}
+
+function closePassportModal() {
+  playSound('click');
+  document.getElementById("passportModal").classList.add("hidden");
+}
+
+/* Initialize Game on Load */
+window.onload = function() {
+  updateUI();
+};
+</script>
+</body>
+</html>
