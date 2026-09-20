@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="th" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>อาณาจักร หลวงสว่าง | Mechatronics Cyber Console</title>
+
+  <!-- Google Fonts: Orbitron, Rajdhani, Kanit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            kanit: ['Kanit', 'sans-serif'],
+            orbitron: ['Orbitron', 'sans-serif'],
+            rajdhani: ['Rajdhani', 'sans-serif'],
+            tech: ['Share Tech Mono', 'monospace'],
+          },
+          colors: {
+            cyber: {
+              bg: '#04070d',
+              card: '#080d1a',
+              cardBorder: 'rgba(0, 240, 255, 0.25)',
+              neon: '#00f0ff',
+              secondary: '#10b981',
+              accent: '#ff2a5f',
+              darkPanel: '#0a1020',
+            }
+          },
+          boxShadow: {
+            'neon-glow': '0 0 20px var(--theme-glow)',
+            'neon-strong': '0 0 35px var(--theme-glow-strong)',
+            'inner-glow': 'inset 0 0 20px var(--theme-glow-subtle)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --theme-primary: #00f0ff;
+      --theme-secondary: #00ffa3;
+      --theme-accent: #ff0055;
+      --theme-bg-gradient: radial-gradient(circle at 50% 10%, rgba(0, 240, 255, 0.12) 0%, transparent 65%);
+      --theme-glow: rgba(0, 240, 255, 0.35);
+      --theme-glow-strong: rgba(0, 240, 255, 0.7);
+      --theme-glow-subtle: rgba(0, 240, 255, 0.15);
+      --theme-border: rgba(0, 240, 255, 0.28);
+    }
+
+    /* Orange / Mecha Red Theme */
+    body.theme-orange {
+      --theme-primary: #ff4d26;
+      --theme-secondary: #ff9100;
+      --theme-accent: #ff0055;
+      --theme-bg-gradient: radial-gradient(circle at 50% 10%, rgba(255, 77, 38, 0.16) 0%, transparent 65%);
+      --theme-glow: rgba(255, 77, 38, 0.4);
+      --theme-glow-strong: rgba(255, 77, 38, 0.8);
+      --theme-glow-subtle: rgba(255, 77, 38, 0.18);
+      --theme-border: rgba(255, 77, 38, 0.35);
+    }
+
+    /* Synthwave Violet Theme */
+    body.theme-violet {
+      --theme-primary: #b537f2;
+      --theme-secondary: #00e5ff;
+      --theme-accent: #ff007f;
+      --theme-bg-gradient: radial-gradient(circle at 50% 10%, rgba(181, 55, 242, 0.16) 0%, transparent 65%);
+      --theme-glow: rgba(181, 55, 242, 0.4);
+      --theme-glow-strong: rgba(181, 55, 242, 0.8);
+      --theme-glow-subtle: rgba(181, 55, 242, 0.18);
+      --theme-border: rgba(181, 55, 242, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    body {
+      background-color: #03060a;
+      color: #e2e8f0;
+      font-family: 'Kanit', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image: 
+        var(--theme-bg-gradient),
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 35px 35px, 35px 35px;
+    }
+
+    /* CRT Scanline effect */
+    .scanlines {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%);
+      background-size: 100% 4px;
+      z-index: 60;
+      pointer-events: none;
+      opacity: 0.55;
+    }
+
+    /* Cyber Panel borders */
+    .cyber-panel {
+      background: rgba(8, 13, 24, 0.85);
+      border: 1px solid var(--theme-border);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8), 0 0 15px var(--theme-glow-subtle);
+      position: relative;
+    }
+
+    /* Corner brackets */
+    .cyber-corner {
+      position: relative;
+    }
+    .cyber-corner::before, .cyber-corner::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-color: var(--theme-primary);
+      pointer-events: none;
+    }
+    .cyber-corner::before {
+      top: -1px; left: -1px;
+      border-top: 2px solid;
+      border-left: 2px solid;
+    }
+    .cyber-corner::after {
+      bottom: -1px; right: -1px;
+      border-bottom: 2px solid;
+      border-right: 2px solid;
+    }
+
+    /* Text glow effect */
+    .text-neon {
+      color: var(--theme-primary);
+      text-shadow: 0 0 12px var(--theme-glow-strong);
+    }
+    .text-secondary-neon {
+      color: var(--theme-secondary);
+      text-shadow: 0 0 10px var(--theme-secondary);
+    }
+
+    /* Rotating HUD Animations */
+    @keyframes spinClockwise {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes spinCounter {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(-360deg); }
+    }
+    @keyframes hudPulse {
+      0%, 100% { transform: scale(1); opacity: 0.85; filter: drop-shadow(0 0 10px var(--theme-primary)); }
+      50% { transform: scale(1.03); opacity: 1; filter: drop-shadow(0 0 25px var(--theme-primary)); }
+    }
+
+    .anim-spin-slow { animation: spinClockwise 25s linear infinite; }
+    .anim-spin-reverse { animation: spinCounter 16s linear infinite; }
+    .anim-hud-pulse { animation: hudPulse 3s ease-in-out infinite; }
+
+    /* Custom Terminal scrollbar */
+    .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+    .custom-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+    .custom-scroll::-webkit-scrollbar-thumb { background: var(--theme-primary); border-radius: 4px; }
+
+    /* Futuristic Button */
+    .cyber-btn {
+      position: relative;
+      background: linear-gradient(90deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.08) 100%);
+      border: 1px solid var(--theme-border);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    }
+    .cyber-btn:hover {
+      border-color: var(--theme-primary);
+      background: var(--theme-glow-subtle);
+      box-shadow: 0 0 20px var(--theme-glow);
+      transform: translateY(-2px);
+    }
+    .cyber-btn.active {
+      background: var(--theme-primary);
+      color: #000 !important;
+      font-weight: 700;
+      box-shadow: 0 0 22px var(--theme-glow);
+      border-color: #fff;
+    }
+
+    /* Glitch effect on hover for Name */
+    .glitch-hover:hover {
+      text-shadow: 2px 0 var(--theme-accent), -2px 0 var(--theme-secondary);
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+
+<body class="relative">
+
+  <!-- Ambient CRT Scanline Overlay -->
+  <div class="scanlines"></div>
+
+  <header class="w-full border-b border-[var(--theme-border)] bg-[#050914]/90 backdrop-blur-md sticky top-0 z-50 py-2.5 px-4 sm:px-8">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs font-tech">
+      
+      <!-- System Telemetry Status -->
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-[var(--theme-secondary)] animate-ping"></span>
+          <span class="text-secondary-neon font-bold tracking-widest uppercase">SYS: ENG-ONLINE</span>
+        </div>
+        <div class="hidden md:flex items-center gap-3 text-zinc-400 border-l border-zinc-800 pl-4">
+          <span>LATENCY: <span class="text-[var(--theme-primary)]">14ms</span></span>
+          <span>CORE: <span class="text-zinc-200">PIC16F / STM32</span></span>
+          <span>SECURITY: <span class="text-emerald-400">CLEARANCE S-TIER</span></span>
+        </div>
+      </div>
+
+      <!-- Realtime Clock & Interactive Controls -->
+      <div class="flex items-center gap-3 ml-auto">
+        <!-- Live Uptime & Clock -->
+        <div class="bg-black/60 border border-zinc-800 px-3 py-1 rounded text-zinc-300 font-mono tracking-wider hidden sm:block">
+          <i class="fa-regular fa-clock text-[var(--theme-primary)] mr-1.5"></i>
+          <span id="liveClock">00:00:00</span>
+        </div>
+
+        <!-- Theme Switcher Palette -->
+        <div class="flex items-center bg-zinc-900/90 border border-zinc-800 rounded-lg p-1 gap-1">
+          <button onclick="setCyberTheme('cyan')" title="Cyan Matrix Theme" class="w-5 h-5 rounded-md bg-cyan-400 border border-white/20 hover:scale-110 transition-transform"></button>
+          <button onclick="setCyberTheme('orange')" title="Mecha Orange Theme" class="w-5 h-5 rounded-md bg-orange-500 border border-white/20 hover:scale-110 transition-transform"></button>
+          <button onclick="setCyberTheme('violet')" title="Synthwave Violet Theme" class="w-5 h-5 rounded-md bg-purple-500 border border-white/20 hover:scale-110 transition-transform"></button>
+        </div>
+
+        <!-- Audio FX Toggle -->
+        <button id="sfxBtn" onclick="toggleAudioFX()" class="cyber-btn px-3 py-1 text-zinc-300 flex items-center gap-1.5 text-xs rounded">
+          <i id="sfxIcon" class="fa-solid fa-volume-high text-[var(--theme-primary)]"></i>
+          <span class="hidden sm:inline">SFX</span>
+        </button>
+
+        <!-- Command Console Trigger -->
+        <button onclick="switchTab('terminal')" class="cyber-btn px-3 py-1 text-[var(--theme-primary)] border-[var(--theme-border)] text-xs rounded flex items-center gap-1">
+          <i class="fa-solid fa-terminal"></i>
+          <span>CLI</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+
+    <!-- HERO / IDENTITY HOLOGRAPHIC UNIT -->
+    <section class="cyber-panel cyber-corner rounded-2xl p-6 sm:p-8 mb-8 overflow-hidden relative">
+      <!-- Background Grid & Circuit Accents -->
+      <div class="absolute -right-20 -top-20 w-80 h-80 bg-[var(--theme-primary)] opacity-10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-[var(--theme-accent)] opacity-10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-8 relative z-10">
+        
+        <!-- Left: Interactive Hologram Gyro Avatar -->
+        <div class="relative flex-shrink-0 flex items-center justify-center w-52 h-52 sm:w-60 sm:h-60 group cursor-pointer" onclick="inspectAvatarCore()">
+          
+          <!-- Outer Gyro Rings -->
+          <svg class="absolute inset-0 w-full h-full anim-spin-slow pointer-events-none" viewBox="0 0 200 200">
+            <circle cx="100" cy="100" r="92" fill="none" stroke="var(--theme-primary)" stroke-width="2" stroke-dasharray="25 15 10 15 45 10" opacity="0.8" />
+            <circle cx="100" cy="100" r="84" fill="none" stroke="var(--theme-secondary)" stroke-width="1" stroke-dasharray="4 8" opacity="0.6" />
+          </svg>
+
+          <svg class="absolute inset-3 w-[calc(100%-24px)] h-[calc(100%-24px)] anim-spin-reverse pointer-events-none" viewBox="0 0 180 180">
+            <circle cx="90" cy="90" r="82" fill="none" stroke="var(--theme-accent)" stroke-width="1.5" stroke-dasharray="12 18 35 12" opacity="0.75" />
+            <circle cx="90" cy="90" r="74" fill="none" stroke="var(--theme-primary)" stroke-width="0.8" stroke-dasharray="2 12" />
+          </svg>
+
+          <!-- Core Hologram Sphere -->
+          <div class="relative w-36 h-36 sm:w-40 sm:h-40 rounded-full bg-gradient-to-tr from-[#02060f] via-[#09152b] to-[#040814] border-2 border-[var(--theme-primary)] flex flex-col items-center justify-center anim-hud-pulse shadow-neon-glow overflow-hidden group-hover:scale-105 transition-transform duration-300">
+            
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--theme-primary)_0%,transparent_70%)] opacity-20"></div>
+
+            <!-- Monogram / Emblem -->
+            <span class="font-orbitron text-5xl sm:text-6xl font-black text-neon tracking-wider drop-shadow-[0_0_15px_var(--theme-primary)]">
+              AL
+            </span>
+            <span class="font-tech text-[10px] tracking-widest text-[var(--theme-secondary)] uppercase mt-0.5">
+              ROBO-CORE v3
+            </span>
+
+            <!-- Scan beam line -->
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--theme-primary)] to-transparent h-1 opacity-40 animate-pulse"></div>
+          </div>
+
+          <!-- Clearance Badge Overlay -->
+          <div class="absolute -bottom-2 bg-black/90 border border-[var(--theme-border)] text-zinc-300 px-3 py-0.5 rounded-full font-tech text-[11px] tracking-wider flex items-center gap-1.5 shadow-lg">
+            <span class="w-1.5 h-1.5 rounded-full bg-[var(--theme-secondary)]"></span>
+            <span>RANK: MASTER CADET</span>
+          </div>
+        </div>
+
+        <!-- Center: Cadet Credentials & Titles -->
+        <div class="flex-1 text-center lg:text-left space-y-3">
+          
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[var(--theme-primary)]/10 border border-[var(--theme-border)] font-tech text-xs tracking-wider uppercase text-[var(--theme-primary)]">
+            <i class="fa-solid fa-microchip animate-pulse"></i>
+            <span>ENGMC613 · MECHATRONICS COHORT 2569</span>
+          </div>
+
+          <div>
+            <h1 class="font-kanit text-3xl sm:text-5xl font-extrabold tracking-tight text-white glitch-hover cursor-default transition-all">
+              อาณาจักร หลวงสว่าง
+            </h1>
+            <p class="font-rajdhani text-lg sm:text-xl font-semibold tracking-wide text-zinc-300 mt-1 flex items-center justify-center lg:justify-start gap-2">
+              <span class="text-[var(--theme-primary)]">&lt;/&gt;</span>
+              <span>Mechatronics Engineer | Embedded &amp; Automation Architect</span>
+            </p>
+          </div>
+
+          <p class="text-zinc-400 text-sm max-w-2xl leading-relaxed font-kanit">
+            วิศวกรรมเมคคาทรอนิกส์และระบบอัตโนมัติ เชี่ยวชาญการผสานฮาร์ดแวร์ไมโครคอนโทรลเลอร์ (PIC, STM32, ESP32) 
+            เข้ากับระบบควบคุมอัตโนมัติ อัลกอริทึม SCADA, IoT และการประมวลผลเซนเซอร์ขั้นสูง
+          </p>
+
+          <!-- Quick Matrix Info Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 font-tech text-xs">
+            <div class="bg-black/50 border border-zinc-800/80 p-2.5 rounded-lg flex items-center justify-between">
+              <span class="text-zinc-500">STUDENT_ID:</span>
+              <span id="mainStudentId" class="text-zinc-200 font-bold tracking-wider">67545202010-9</span>
+              <button onclick="quickCopy('67545202010-9', 'คัดลอกรหัสนักศึกษาแล้ว')" title="คัดลอก" class="text-zinc-400 hover:text-[var(--theme-primary)] ml-1">
+                <i class="fa-regular fa-copy"></i>
+              </button>
+            </div>
+
+            <div class="bg-black/50 border border-zinc-800/80 p-2.5 rounded-lg flex items-center justify-between truncate">
+              <span class="text-zinc-500">COMMS:</span>
+              <a href="mailto:anachak.luangsawang@gmail.com" class="text-[var(--theme-primary)] hover:underline truncate ml-2">
+                anachak.luang@gmail.com
+              </a>
+            </div>
+
+            <div class="bg-black/50 border border-zinc-800/80 p-2.5 rounded-lg flex items-center justify-between">
+              <span class="text-zinc-500">GITHUB:</span>
+              <a href="https://github.com/anachak-realm" target="_blank" class="text-zinc-200 hover:text-[var(--theme-secondary)] flex items-center gap-1 font-bold">
+                <span>anachak-realm</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right: Fast Actions & Dossier -->
+        <div class="flex flex-row lg:flex-col gap-2.5 w-full lg:w-48">
+          <a href="https://github.com/anachak-realm" target="_blank" class="cyber-btn flex-1 py-3 px-4 text-center rounded-lg text-xs font-tech font-bold text-white flex items-center justify-center gap-2 bg-[var(--theme-primary)]/20 border-[var(--theme-primary)]">
+            <i class="fa-brands fa-github text-sm"></i>
+            <span>GITHUB MATRIX</span>
+          </a>
+
+          <button onclick="downloadDossier()" class="cyber-btn flex-1 py-2.5 px-4 text-center rounded-lg text-xs font-tech text-zinc-300 flex items-center justify-center gap-2 bg-zinc-900/60">
+            <i class="fa-solid fa-file-arrow-down text-[var(--theme-secondary)]"></i>
+            <span>EXPORT DOSSIER</span>
+          </button>
+
+          <button onclick="openCommsModal()" class="cyber-btn flex-1 py-2.5 px-4 text-center rounded-lg text-xs font-tech text-zinc-300 flex items-center justify-center gap-2 bg-zinc-900/60">
+            <i class="fa-solid fa-satellite-dish text-[var(--theme-primary)]"></i>
+            <span>DISPATCH COMMS</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="flex items-center gap-2 border-b border-zinc-800/80 pb-3 mb-6 overflow-x-auto custom-scroll text-xs sm:text-sm font-tech">
+      <button id="tabBtn-cores" onclick="switchTab('cores')" class="cyber-btn active px-4 py-2 rounded-lg flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-microchip"></i>
+        <span>01 // TECH CORES &amp; GAUGES</span>
+      </button>
+
+      <button id="tabBtn-projects" onclick="switchTab('projects')" class="cyber-btn px-4 py-2 rounded-lg text-zinc-400 flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-diagram-project"></i>
+        <span>02 // HARDWARE BENCH</span>
+      </button>
+
+      <button id="tabBtn-terminal" onclick="switchTab('terminal')" class="cyber-btn px-4 py-2 rounded-lg text-zinc-400 flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-terminal"></i>
+        <span>03 // CYBER TERMINAL CLI</span>
+      </button>
+
+      <button id="tabBtn-telemetry" onclick="switchTab('telemetry')" class="cyber-btn px-4 py-2 rounded-lg text-zinc-400 flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>04 // LIVE TELEMETRY</span>
+      </button>
+    </div>
+
+    <section id="tab-cores" class="tab-content block space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div>
+          <h2 class="font-orbitron text-lg font-bold text-white flex items-center gap-2">
+            <span class="text-[var(--theme-primary)]">//</span> CORE COMPETENCIES &amp; POWER METRICS
+          </h2>
+          <p class="text-zinc-400 text-xs font-kanit">คลิกที่แต่ละโมดูลเพื่อดูรายงาน Telemetry และรายละเอียดสเปก</p>
+        </div>
+        <span class="font-tech text-xs text-[var(--theme-secondary)] bg-emerald-950/40 border border-emerald-800/60 px-2.5 py-1 rounded-md">
+          8/8 UNITS SYNCHRONIZED
+        </span>
+      </div>
+
+      <!-- Skills Matrix Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="coresGrid">
+        <!-- Injected via JavaScript for rich interactions -->
+      </div>
+    </section>
+
+    <section id="tab-projects" class="tab-content hidden space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div>
+          <h2 class="font-orbitron text-lg font-bold text-white flex items-center gap-2">
+            <span class="text-[var(--theme-secondary)]">//</span> HARDWARE LAB &amp; SPECIAL OPERATIONS
+          </h2>
+          <p class="text-zinc-400 text-xs font-kanit">โปรเจกต์วิจัย พัฒนาระบบอัตโนมัติ และฮาร์ดแวร์เมคคาทรอนิกส์</p>
+        </div>
+        <span class="font-tech text-xs text-[var(--theme-primary)] bg-cyan-950/40 border border-cyan-800/60 px-2.5 py-1 rounded-md">
+          CLASSIFIED PROTOTYPES
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Project 1 -->
+        <div class="cyber-panel rounded-xl p-5 hover:border-[var(--theme-primary)] transition-all flex flex-col justify-between group">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between text-xs font-tech text-zinc-400">
+              <span class="text-orange-400 font-bold">PROJECT PROTO-01</span>
+              <span>STATUS: DEPLOYED</span>
+            </div>
+            <h3 class="text-lg font-bold text-white font-kanit group-hover:text-[var(--theme-primary)] transition-colors">
+              Autonomous Dual-Axis Solar Tracker
+            </h3>
+            <p class="text-xs text-zinc-400 font-kanit leading-relaxed">
+              ระบบติดตามแสงอาทิตย์สองแกนอัตโนมัติ ประมวลผลด้วยไมโครคอนโทรลเลอร์ PIC16F887 ควบคุมเซอร์โวมอเตอร์กำลังสูง และเซนเซอร์วัดค่าความสว่าง LDR แม่นยำสูง
+            </p>
+            <div class="flex flex-wrap gap-1.5 pt-2">
+              <span class="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[10px] font-mono text-zinc-300">PIC16F887</span>
+              <span class="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[10px] font-mono text-zinc-300">Embedded C</span>
+              <span class="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[10px] font-mono text-zinc-300">PWM Control</span>
+            </div>
+          </div>
+          <div class="pt-4 mt-4 border-t border-zinc-800/80 flex items-center justify-between text-xs font-tech">
+            <button onclick="triggerHwSimulation('Dual-Axis Servo Tracker', 'CALIBRATING PWM FREQ: 50Hz... SERVO AZIMUTH: 184.2° | ELEVATION: 42.8°')" class="text-[var(--theme-primary)] hover:underline flex items-center gap-1">
+              <i class="fa-solid fa-play text-[10px]"></i> TEST PINS
+            </button>
+            <span class="text-zinc-500">REV 2.4</span>
+          </div>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="cyber-panel rounded-xl p-5 hover:border-[var(--theme-primary)] transition-all flex flex-col justify-between group">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between text-xs font-tech text-zinc-400">
+              <span class="text-cyan-400 font-bold">PROJECT PROTO-02</span>
+              <span>STATUS: OPERATIONAL</span>
+            </div>
+            <h3 class="text-lg font-bold text-white font-kanit group-hover:text-[var(--theme-primary)] transition-colors">
+              IoT SCADA Plant Automation Hub
+            </h3>
+            <p class="text-xs text-zinc-400 font-kanit leading-relaxed">
+              ระบบตรวจวัดและมอนิเตอร์โรงงานอุตสาหกรรมผ่าน MQTT Protocol ส่งถ่ายข้อมูลสถานะความร้อน, แรงดันไฮดรอลิก และความสั่นสะเทือนแบบ Real-time ขึ้นแดชบอร์ด
+            </p>
+            <div class="flex flex-wrap gap-1.5 pt-2">
+              <span class="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[10px] font-mono text-zinc-300">ESP32</span>
+              <span class="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[10px] font-mono text-zinc-300">MQTT</span>
+              <span class="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[10px] font-mono text-zinc-300">Node-RED</span>
+              <span class="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[10px] font-mono text-zinc-300">PLC</span>
+            </div>
+          </div>
+          <div class="pt-4 mt-4 border-t border-zinc-800/80 flex items-center justify-between text-xs font-tech">
+            <button onclick="triggerHwSimulation('IoT SCADA Hub', 'BROKER CONNECTED: mqtt://broker.emqx.io:1883... PRESSURE: 4.8 BAR... TEMP: 58.2°C')" class="text-[var(--theme-primary)] hover:underline flex items-center gap-1">
+              <i class="fa-solid fa-play text-[10px]"></i> TEST PINS
+            </button>
+            <span class="text-zinc-500">REV 1.9</span>
+          </div>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="cyber-panel rounded-xl p-5 hover:border-[var(--theme-primary)] transition-all flex flex-col justify-between group">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between text-xs font-tech text-zinc-400">
+              <span class="text-emerald-400 font-bold">PROJECT PROTO-03</span>
+              <span>STATUS: IN-DEVELOPMENT</span>
+            </div>
+            <h3 class="text-lg font-bold text-white font-kanit group-hover:text-[var(--theme-primary)] transition-colors">
+              Computer Vision Robotic Sorter Arm
+            </h3>
+            <p class="text-xs text-zinc-400 font-kanit leading-relaxed">
+              แขนกลคัดแยกสิ่งของ 4 แกนเสรี พร้อมโมดูลกล้องตรวจจับสีและรูปทรงของชิ้นงานผ่าน OpenCV ร่วมกับ MATLAB เพื่อส่งพิกัด Inverse Kinematics ควบคุม Stepper Motors
+            </p>
+            <div class="flex flex-wrap gap-1.5 pt-2">
+              <span class="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[10px] font-mono text-zinc-300">OpenCV</span>
+              <span class="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[10px] font-mono text-zinc-300">MATLAB</span>
+              <span class="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[10px] font-mono text-zinc-300">Kinematics</span>
+              <span class="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-[10px] font-mono text-zinc-300">Robotics</span>
+            </div>
+          </div>
+          <div class="pt-4 mt-4 border-t border-zinc-800/80 flex items-center justify-between text-xs font-tech">
+            <button onclick="triggerHwSimulation('Robotic Vision Arm', 'CAMERA FEED: 60FPS ACQUIRED... OBJECT DETECTED [COLOR: RED, COORD: X:142, Y:89, Z:30]')" class="text-[var(--theme-primary)] hover:underline flex items-center gap-1">
+              <i class="fa-solid fa-play text-[10px]"></i> TEST PINS
+            </button>
+            <span class="text-zinc-500">REV 3.1</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Live Hardware Pin Simulation Banner -->
+      <div id="hwSimPanel" class="cyber-panel p-4 rounded-xl border border-dashed border-zinc-700 font-tech text-xs space-y-2 hidden">
+        <div class="flex items-center justify-between text-zinc-400">
+          <span class="flex items-center gap-2 text-[var(--theme-secondary)] font-bold">
+            <i class="fa-solid fa-wave-square animate-pulse"></i>
+            <span id="hwSimTitle">HARDWARE PIN BUS ACTIVE</span>
+          </span>
+          <button onclick="closeHwSim()" class="text-zinc-500 hover:text-white">✕ CLOSE</button>
+        </div>
+        <p id="hwSimLog" class="text-zinc-300 bg-black/80 p-2.5 rounded font-mono text-xs border border-zinc-800"></p>
+      </div>
+    </section>
+
+    <section id="tab-terminal" class="tab-content hidden space-y-4">
+      <div class="cyber-panel rounded-2xl overflow-hidden border border-[var(--theme-border)]">
+        <!-- Terminal Header -->
+        <div class="bg-black/90 px-4 py-2.5 border-b border-zinc-800 flex items-center justify-between font-tech text-xs">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+            <span class="text-zinc-400 ml-2 font-mono">root@anachak-console:~# (Bash/Zsh Mecha Shell)</span>
+          </div>
+          <span class="text-zinc-500">TTY: /dev/pts/0</span>
+        </div>
+
+        <!-- Terminal Output Screen -->
+        <div id="terminalScreen" class="bg-[#02050b] p-4 sm:p-6 font-mono text-xs sm:text-sm text-zinc-300 h-80 sm:h-96 overflow-y-auto custom-scroll space-y-2 select-text">
+          <div class="text-[var(--theme-primary)]">
+****************************************************************<br>
+* ANACAHK LUANGSAWANG // MECHATRONICS CADET TERMINAL v3.2.0    *<br>
+* SYSTEM AUTHORIZED: ACADEMIC &amp; ENGINEERING CONSOLE           *<br>
+****************************************************************<br>
+Type <span class="text-amber-400 font-bold">'help'</span> to see all available commands.
+          </div>
+          <div id="terminalHistory"></div>
+        </div>
+
+        <!-- Terminal Input Prompt -->
+        <form id="terminalForm" onsubmit="handleTerminalCommand(event)" class="bg-[#050b17] border-t border-zinc-800/80 px-4 py-3 flex items-center gap-2">
+          <span class="text-[var(--theme-primary)] font-tech font-bold text-sm">anachak@mecha:~$</span>
+          <input type="text" id="terminalInput" autocomplete="off" spellcheck="false" class="flex-1 bg-transparent text-white font-mono text-xs sm:text-sm outline-none placeholder-zinc-600" placeholder="พิมพ์คำสั่ง เช่น help, skills, bio, contact, clear...">
+          <button type="submit" class="text-xs font-tech text-[var(--theme-primary)] px-3 py-1 bg-zinc-900 border border-zinc-700 rounded hover:bg-zinc-800">
+            EXEC
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section id="tab-telemetry" class="tab-content hidden space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div>
+          <h2 class="font-orbitron text-lg font-bold text-white flex items-center gap-2">
+            <span class="text-[var(--theme-primary)]">//</span> LIVE SENSOR TELEMETRY &amp; OSCILLOSCOPE
+          </h2>
+          <p class="text-zinc-400 text-xs font-kanit">กราฟแสดงผลจำลองคลื่นสัญญาณ PWM และการวัดองศา Servo Gyro แบบ Real-time</p>
+        </div>
+        <span class="font-tech text-xs text-amber-400 bg-amber-950/40 border border-amber-800/60 px-2.5 py-1 rounded-md">
+          SAMPLING: 250 kHz
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Live Oscilloscope Canvas -->
+        <div class="cyber-panel lg:col-span-2 rounded-xl p-4 sm:p-5 flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-3 font-tech text-xs">
+            <span class="text-zinc-300 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-[var(--theme-primary)] animate-ping"></span>
+              OSCILLOSCOPE CHANNEL A (PWM SQUARE/SINE GENERATOR)
+            </span>
+            <div class="flex items-center gap-2 text-zinc-500">
+              <span class="text-[var(--theme-secondary)] font-bold" id="oscFreqLabel">50.0 Hz</span>
+              <span>| 3.3V P-P</span>
+            </div>
+          </div>
+          
+          <div class="relative w-full h-48 sm:h-56 bg-[#02050a] border border-zinc-800 rounded-lg overflow-hidden">
+            <canvas id="scopeCanvas" class="w-full h-full block"></canvas>
+            <!-- Scope Crosshair grid overlay -->
+            <div class="absolute inset-0 pointer-events-none flex items-center justify-center opacity-25">
+              <div class="w-full h-[1px] bg-cyan-400"></div>
+              <div class="absolute h-full w-[1px] bg-cyan-400"></div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between mt-3 font-tech text-xs pt-2 text-zinc-400">
+            <div class="flex gap-2">
+              <button onclick="setWaveMode('sine')" class="px-2.5 py-1 rounded bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-700">SINE</button>
+              <button onclick="setWaveMode('square')" class="px-2.5 py-1 rounded bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-700">SQUARE</button>
+              <button onclick="setWaveMode('saw')" class="px-2.5 py-1 rounded bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-700">SAWTOOTH</button>
+            </div>
+            <span>TRIG: AUTO CH1</span>
+          </div>
+        </div>
+
+        <!-- Right Side: Servo Gyro & System Resource Meter -->
+        <div class="cyber-panel rounded-xl p-5 flex flex-col justify-between space-y-4">
+          <div>
+            <h3 class="font-tech text-xs tracking-wider text-zinc-400 mb-3 uppercase">IMU 6-AXIS GYRO SIMULATION</h3>
+            
+            <div class="relative w-36 h-36 mx-auto flex items-center justify-center">
+              <div id="gyroRing" class="w-full h-full rounded-full border-2 border-dashed border-[var(--theme-primary)] flex items-center justify-center transition-transform duration-75">
+                <div class="w-24 h-24 rounded-full border border-[var(--theme-secondary)] flex items-center justify-center">
+                  <div class="w-3 h-3 rounded-full bg-[var(--theme-accent)]"></div>
+                </div>
+              </div>
+              <span id="gyroAngleText" class="absolute font-tech text-xs text-white bg-black/80 px-2 py-0.5 rounded border border-zinc-800">
+                0.0°
+              </span>
+            </div>
+          </div>
+
+          <!-- Meters -->
+          <div class="space-y-3 font-tech text-xs pt-2">
+            <div>
+              <div class="flex justify-between text-zinc-400 mb-1">
+                <span>MCU CPU LOAD</span>
+                <span id="cpuLoadText" class="text-[var(--theme-secondary)]">28%</span>
+              </div>
+              <div class="w-full bg-zinc-900 h-1.5 rounded-full overflow-hidden">
+                <div id="cpuBar" class="bg-[var(--theme-secondary)] h-full w-[28%] transition-all duration-500"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-zinc-400 mb-1">
+                <span>SRAM ALLOCATION</span>
+                <span class="text-[var(--theme-primary)]">64.2 KB / 128 KB</span>
+              </div>
+              <div class="w-full bg-zinc-900 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-[var(--theme-primary)] h-full w-[52%]"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-zinc-400 mb-1">
+                <span>CORE VOLTAGE</span>
+                <span class="text-zinc-200">3.312 V (STABLE)</span>
+              </div>
+              <div class="w-full bg-zinc-900 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-emerald-400 h-full w-[94%]"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <div id="telemetryModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-200">
+    <div class="cyber-panel border border-[var(--theme-primary)] rounded-2xl w-full max-w-md p-6 relative shadow-neon-glow">
+      <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
+        <h3 id="modalTitle" class="font-orbitron text-base font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-microchip text-[var(--theme-primary)]"></i>
+          <span>MODULE TELEMETRY</span>
+        </h3>
+        <button onclick="closeModal()" class="text-zinc-400 hover:text-white p-1">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="py-4 space-y-3 font-kanit text-xs text-zinc-300">
+        <div class="flex items-center justify-between font-tech text-sm bg-black/60 p-2.5 rounded-lg border border-zinc-800">
+          <span class="text-zinc-400">PROFICIENCY INDEX:</span>
+          <span id="modalLevel" class="font-bold text-[var(--theme-secondary)] text-base">95%</span>
+        </div>
+        <p id="modalDesc" class="leading-relaxed text-zinc-300"></p>
+        <div class="bg-zinc-950 p-3 rounded-lg border border-zinc-800 font-mono text-[11px] text-zinc-400">
+          <span class="text-[var(--theme-primary)] font-bold">KEY APPLICATIONS:</span>
+          <p id="modalApps" class="mt-1 text-zinc-200"></p>
+        </div>
+      </div>
+
+      <div class="pt-2 flex justify-end">
+        <button onclick="closeModal()" class="cyber-btn px-4 py-2 rounded-lg text-xs font-tech text-white bg-[var(--theme-primary)]/20">
+          ACKNOWLEDGE
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dispatch Comms Modal -->
+  <div id="commsModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-200">
+    <div class="cyber-panel border border-[var(--theme-secondary)] rounded-2xl w-full max-w-md p-6 relative shadow-neon-glow">
+      <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
+        <h3 class="font-orbitron text-base font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-satellite-dish text-[var(--theme-secondary)]"></i>
+          <span>TRANSMIT COMMS SIGNAL</span>
+        </h3>
+        <button onclick="closeCommsModal()" class="text-zinc-400 hover:text-white p-1">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <form onsubmit="handleSendComms(event)" class="py-4 space-y-3 text-xs font-kanit">
+        <div>
+          <label class="block text-zinc-400 mb-1 font-tech">SENDER CALLSIGN / NAME</label>
+          <input type="text" id="commsName" required class="w-full bg-black/70 border border-zinc-700 rounded-lg px-3 py-2 text-white outline-none focus:border-[var(--theme-secondary)]">
+        </div>
+        <div>
+          <label class="block text-zinc-400 mb-1 font-tech">COMMUNICATION FREQUENCY (EMAIL)</label>
+          <input type="email" id="commsEmail" required class="w-full bg-black/70 border border-zinc-700 rounded-lg px-3 py-2 text-white outline-none focus:border-[var(--theme-secondary)]">
+        </div>
+        <div>
+          <label class="block text-zinc-400 mb-1 font-tech">PACKET PAYLOAD / MESSAGE</label>
+          <textarea id="commsMsg" rows="3" required class="w-full bg-black/70 border border-zinc-700 rounded-lg px-3 py-2 text-white outline-none focus:border-[var(--theme-secondary)]" placeholder="พิมพ์ข้อความหรือข้อเสนองานที่นี่..."></textarea>
+        </div>
+        <div class="flex justify-end gap-2 pt-2 font-tech">
+          <button type="button" onclick="closeCommsModal()" class="px-4 py-2 rounded-lg text-zinc-400 hover:bg-zinc-800">CANCEL</button>
+          <button type="submit" class="cyber-btn px-5 py-2 rounded-lg text-black font-bold bg-[var(--theme-secondary)]">TRANSMIT</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Global Toast Notification -->
+  <div id="cyberToast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-[#081220] text-zinc-200 border border-[var(--theme-border)] px-5 py-2.5 rounded-full text-xs font-tech shadow-2xl flex items-center gap-2.5 pointer-events-none opacity-0 transition-all duration-300">
+    <i class="fa-solid fa-circle-check text-[var(--theme-primary)]"></i>
+    <span id="toastContent">DATA SYNCED</span>
+  </div>
+
+  <script>
+    // State management
+    let soundEnabled = true;
+    let audioCtx = null;
+    let currentWaveMode = 'sine';
+    let scopeAnimId = null;
+
+    // Skills Matrix Data
+    const techCores = [
+      {
+        name: "Embedded Systems & C/C++",
+        level: "95%",
+        icon: "fa-solid fa-microchip",
+        color: "var(--theme-primary)",
+        desc: "การพัฒนาเฟิร์มแวร์ระบบฝังตัวระดับ Low-level ทั้ง Bare-metal และ RTOS การจัดการ Interrupts, Timers, และ Memory Allocation อย่างมีประสิทธิภาพสูงสุด",
+        apps: "Embedded C/C++, FreeRTOS, Peripheral Register Manipulation"
+      },
+      {
+        name: "PIC16F887 & PIC Micro",
+        level: "92%",
+        icon: "fa-solid fa-memory",
+        color: "var(--theme-secondary)",
+        desc: "การออกแบบวงจรและการเขียนโปรแกรมไมโครคอนโทรลเลอร์ PIC ตระกูล 16F/18F การควบคุม PWM, ADC, UART, I2C และ SPI ในงานระบบอัตโนมัติ",
+        apps: "MPLAB X IDE, XC8 Compiler, Proteus Circuit Simulation"
+      },
+      {
+        name: "STM32 & ARM Cortex",
+        level: "88%",
+        icon: "fa-solid fa-bolt",
+        color: "var(--theme-primary)",
+        desc: "สถาปัตยกรรม ARM Cortex-M การใช้งาน STM32CubeIDE, HAL Library, DMA Transfer ความเร็วสูงสำหรับงานควบคุมหุ่นยนต์และระบบที่มีความซับซ้อน",
+        apps: "STM32F4/F1, CubeMX, Hardware Timer PWM, DMA Controller"
+      },
+      {
+        name: "MATLAB & Simulink",
+        level: "90%",
+        icon: "fa-solid fa-chart-line",
+        color: "var(--theme-accent)",
+        desc: "การจำลองระบบพลศาสตร์ (Dynamic Modeling), การออกแบบตัวควบคุม PID และ State-space Control, การวิเคราะห์ Root Locus และ Bode Plot",
+        apps: "Simulink Mechatronics Blocks, Control System Toolbox, Data Fitting"
+      },
+      {
+        name: "Automation & PLC SCADA",
+        level: "86%",
+        icon: "fa-solid fa-industry",
+        color: "var(--theme-secondary)",
+        desc: "ระบบอัตโนมัติในงานอุตสาหกรรม การเขียนโปรแกรมแลดเดอร์ไดอะแกรม (Ladder Diagram), HMI Interface และการสื่อสาร Modbus RTU/TCP",
+        apps: "PLC Ladder Logic, HMI Design, Industrial Sensors & Actuators"
+      },
+      {
+        name: "ESP32 & Industrial IoT",
+        level: "94%",
+        icon: "fa-solid fa-wifi",
+        color: "var(--theme-primary)",
+        desc: "การเชื่อมต่ออุปกรณ์ฮาร์ดแวร์เข้าสู่เครือข่าย Cloud ผ่านโปรโตคอล MQTT, WebSockets, REST APIs พร้อมระบบ OTA Firmware Update",
+        apps: "ESP-IDF, MQTT Broker Integration, Edge Sensor Nodes"
+      },
+      {
+        name: "Robotics & Kinematics",
+        level: "89%",
+        icon: "fa-solid fa-robot",
+        color: "var(--theme-accent)",
+        desc: "การคำนวณ Forward / Inverse Kinematics สำหรับแขนกลและหุ่นยนต์เคลื่อนที่ (AGV), การควบคุม Stepper/Servo แบบ Closed-loop PID",
+        apps: "DH Parameters, Trajectory Planning, Closed-Loop Encoders"
+      },
+      {
+        name: "Computer Vision & Sensors",
+        level: "85%",
+        icon: "fa-solid fa-eye",
+        color: "var(--theme-secondary)",
+        desc: "การประมวลผลภาพชิ้นงานอุตสาหกรรมผ่าน OpenCV การตรวจจับวัตถุ คัดแยกสี ตรวจสอบตำหนิ และการผสานเซนเซอร์ Ultrasonic, LiDAR, IMU",
+        apps: "OpenCV Python/C++, Object Detection, Sensor Fusion Kalman Filter"
+      }
+    ];
+
+    // Web Audio Synthesizer (Zero External Dependencies)
+    function playSciFiSound(freq = 600, type = 'sine', duration = 0.08, slideTo = null) {
+      if (!soundEnabled) return;
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        if (slideTo) {
+          osc.frequency.exponentialRampToValueAtTime(slideTo, audioCtx.currentTime + duration);
+        }
+
+        gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch(e) {}
+    }
+
+    function toggleAudioFX() {
+      soundEnabled = !soundEnabled;
+      const icon = document.getElementById('sfxIcon');
+      if (soundEnabled) {
+        icon.className = 'fa-solid fa-volume-high text-[var(--theme-primary)]';
+        showToast('SFX AUDIO FEEDBACK ENABLED');
+        playSciFiSound(880, 'triangle', 0.1);
+      } else {
+        icon.className = 'fa-solid fa-volume-xmark text-zinc-500';
+        showToast('SFX AUDIO FEEDBACK MUTED');
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('cyberToast');
+      const content = document.getElementById('toastContent');
+      content.innerText = msg;
+      toast.style.opacity = '1';
+      toast.style.transform = 'translate(-50%, -10px)';
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translate(-50%, 0)';
+      }, 2400);
+    }
+
+    function quickCopy(text, label) {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showToast(label || 'COPIED TO CLIPBOARD');
+        playSciFiSound(700, 'sine', 0.08, 900);
+      } catch (err) {}
+      document.body.removeChild(textArea);
+    }
+
+    // Theme Switcher
+    function setCyberTheme(theme) {
+      document.body.classList.remove('theme-orange', 'theme-violet');
+      if (theme === 'orange') {
+        document.body.classList.add('theme-orange');
+        showToast('PALETTE: MECHATRONICS ORANGE / RED');
+      } else if (theme === 'violet') {
+        document.body.classList.add('theme-violet');
+        showToast('PALETTE: SYNTHWAVE CYBER VIOLET');
+      } else {
+        showToast('PALETTE: MATRIX HOLOGRAPHIC CYAN');
+      }
+      playSciFiSound(520, 'square', 0.1, 820);
+    }
+
+    // Tab switcher
+    function switchTab(tabId) {
+      playSciFiSound(440, 'sine', 0.06, 660);
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('[id^="tabBtn-"]').forEach(btn => btn.classList.remove('active'));
+
+      const targetTab = document.getElementById(`tab-${tabId}`);
+      const targetBtn = document.getElementById(`tabBtn-${tabId}`);
+
+      if (targetTab) targetTab.classList.remove('hidden');
+      if (targetBtn) targetBtn.classList.add('active');
+
+      if (tabId === 'telemetry') {
+        initOscilloscope();
+      }
+    }
+
+    // Render Tech Cores Grid
+    function renderCores() {
+      const grid = document.getElementById('coresGrid');
+      grid.innerHTML = '';
+      techCores.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'cyber-panel rounded-xl p-4 cursor-pointer hover:border-[var(--theme-primary)] transition-all group flex flex-col justify-between';
+        card.onclick = () => openSkillModal(index);
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between text-xs font-tech mb-3">
+              <span class="text-zinc-500">MODULE #0${index + 1}</span>
+              <span class="font-bold text-[var(--theme-primary)]">${item.level}</span>
+            </div>
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-10 h-10 rounded-lg bg-black/60 border border-zinc-800 flex items-center justify-center text-[var(--theme-primary)] group-hover:scale-110 transition-transform">
+                <i class="${item.icon} text-lg"></i>
+              </div>
+              <h4 class="font-kanit font-semibold text-sm text-zinc-100 group-hover:text-[var(--theme-primary)] transition-colors">${item.name}</h4>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-zinc-800/80">
+            <div class="w-full bg-zinc-900 h-1.5 rounded-full overflow-hidden mb-2">
+              <div class="bg-[var(--theme-primary)] h-full" style="width: ${item.level}"></div>
+            </div>
+            <div class="flex items-center justify-between text-[11px] font-tech text-zinc-400">
+              <span>DIAGNOSTICS</span>
+              <span class="text-[var(--theme-secondary)] group-hover:underline">INSPECT ↗</span>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function openSkillModal(index) {
+      playSciFiSound(750, 'triangle', 0.1);
+      const skill = techCores[index];
+      document.getElementById('modalTitle').innerHTML = `<i class="${skill.icon} text-[var(--theme-primary)]"></i> <span>${skill.name}</span>`;
+      document.getElementById('modalLevel').innerText = skill.level;
+      document.getElementById('modalDesc').innerText = skill.desc;
+      document.getElementById('modalApps').innerText = skill.apps;
+
+      const modal = document.getElementById('telemetryModal');
+      modal.classList.remove('hidden');
+      setTimeout(() => modal.classList.remove('opacity-0'), 10);
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('telemetryModal');
+      modal.classList.add('opacity-0');
+      setTimeout(() => modal.classList.add('hidden'), 200);
+    }
+
+    function openCommsModal() {
+      playSciFiSound(540, 'sine', 0.08);
+      const modal = document.getElementById('commsModal');
+      modal.classList.remove('hidden');
+      setTimeout(() => modal.classList.remove('opacity-0'), 10);
+    }
+
+    function closeCommsModal() {
+      const modal = document.getElementById('commsModal');
+      modal.classList.add('opacity-0');
+      setTimeout(() => modal.classList.add('hidden'), 200);
+    }
+
+    function handleSendComms(e) {
+      e.preventDefault();
+      const name = document.getElementById('commsName').value;
+      playSciFiSound(880, 'sine', 0.15, 1200);
+      showToast(`สัญญาณส่งถึง อาณาจักร หลวงสว่าง สำเร็จแล้ว (${name})`);
+      closeCommsModal();
+      document.getElementById('commsName').value = '';
+      document.getElementById('commsEmail').value = '';
+      document.getElementById('commsMsg').value = '';
+    }
+
+    function triggerHwSimulation(title, log) {
+      playSciFiSound(620, 'square', 0.1, 400);
+      const panel = document.getElementById('hwSimPanel');
+      document.getElementById('hwSimTitle').innerText = `HARDWARE BUS PINOUT: ${title}`;
+      document.getElementById('hwSimLog').innerText = `[${new Date().toLocaleTimeString()}] >> ${log}`;
+      panel.classList.remove('hidden');
+    }
+
+    function closeHwSim() {
+      document.getElementById('hwSimPanel').classList.add('hidden');
+    }
+
+    function inspectAvatarCore() {
+      playSciFiSound(300, 'sawtooth', 0.2, 900);
+      showToast('HOLOGRAPHIC AVATAR CORE: ALL PROTOCOLS VERIFIED [OK]');
+    }
+
+    // Export vCard / Dossier
+    function downloadDossier() {
+      playSciFiSound(600, 'sine', 0.12);
+      const vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:อาณาจักร หลวงสว่าง (Anachak Luangsawang)
+ORG:Mechatronics Engineering Cohort 2569
+TITLE:Mechatronics & Automation Engineer
+NOTE:Student ID: 67545202010-9 | Batch: ENGMC613
+EMAIL;TYPE=INTERNET:anachak.luangsawang@gmail.com
+URL:https://github.com/anachak-realm
+END:VCARD`;
+
+      const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Anachak_Luangsawang_Mechatronics.vcf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast('DOSSIER EXPORTED (VCard Ready)');
+    }
+
+    // CLI Terminal Execution Engine
+    function handleTerminalCommand(e) {
+      e.preventDefault();
+      const input = document.getElementById('terminalInput');
+      const cmd = input.value.trim().toLowerCase();
+      if (!cmd) return;
+
+      playSciFiSound(500, 'square', 0.05);
+
+      const history = document.getElementById('terminalHistory');
+      const echo = document.createElement('div');
+      echo.className = 'text-zinc-400 mt-2 font-mono';
+      echo.innerHTML = `<span class="text-[var(--theme-primary)]">anachak@mecha:~$</span> ${escapeHtml(input.value)}`;
+      history.appendChild(echo);
+
+      const response = document.createElement('div');
+      response.className = 'text-zinc-200 mt-0.5 leading-relaxed font-mono';
+
+      switch (cmd) {
+        case 'help':
+          response.innerHTML = `คำสั่งที่รองรับในระบบ:<br>
+  - <span class="text-amber-400">skills</span>   : แสดงรายการความเชี่ยวชาญด้านเมคคาทรอนิกส์<br>
+  - <span class="text-amber-400">bio</span>      : ประวัติและรหัสนักศึกษาของ อาณาจักร หลวงสว่าง<br>
+  - <span class="text-amber-400">contact</span>  : ช่องทางการติดต่อทางอีเมลและ GitHub<br>
+  - <span class="text-amber-400">projects</span> : รายการโปรเจกต์ฮาร์ดแวร์ที่กำลังพัฒนา<br>
+  - <span class="text-amber-400">matrix</span>   : แสดงกราฟิก Matrix Rain จำลอง<br>
+  - <span class="text-amber-400">theme</span>    : สลับโหมดสี (เช่น theme cyan, theme orange)<br>
+  - <span class="text-amber-400">clear</span>    : ล้างหน้าจอเทอร์มินัล`;
+          break;
+
+        case 'skills':
+          response.innerHTML = techCores.map(c => `[+] ${c.name} : ${c.level}`).join('<br>');
+          break;
+
+        case 'bio':
+          response.innerHTML = `ชื่อ: อาณาจักร หลวงสว่าง (Anachak Luangsawang)<br>รหัสนักศึกษา: 67545202010-9<br>รหัสรุ่น: ENGMC613 (Mechatronics Engineering)<br>สังกัด: สาขาวิชาวิศวกรรมเมคคาทรอนิกส์และระบบอัตโนมัติ`;
+          break;
+
+        case 'contact':
+          response.innerHTML = `EMAIL : anachak.luangsawang@gmail.com<br>GITHUB: https://github.com/anachak-realm<br>LOCATION: Thailand (Mechatronics Lab)`;
+          break;
+
+        case 'projects':
+          response.innerHTML = `[1] Autonomous Dual-Axis Solar Tracker (PIC16F887)<br>[2] IoT SCADA Plant Automation Hub (ESP32/MQTT)<br>[3] Computer Vision Robotic Sorter Arm (OpenCV/MATLAB)`;
+          break;
+
+        case 'clear':
+          history.innerHTML = '';
+          input.value = '';
+          return;
+
+        case 'matrix':
+          response.innerHTML = `<span class="text-emerald-400">01000001 01001110 01000001 01000011 01001000 01000001 01001011<br>ACCESS GRANTED: MECHATRONICS HYPER-CORE ACTIVE</span>`;
+          break;
+
+        case 'theme cyan':
+          setCyberTheme('cyan');
+          response.innerText = 'Theme switched to Cyan Matrix.';
+          break;
+
+        case 'theme orange':
+          setCyberTheme('orange');
+          response.innerText = 'Theme switched to Mechatronics Orange.';
+          break;
+
+        case 'theme violet':
+          setCyberTheme('violet');
+          response.innerText = 'Theme switched to Synthwave Violet.';
+          break;
+
+        default:
+          response.innerHTML = `<span class="text-red-400">bash: command not found: ${escapeHtml(cmd)}. พิมพ์ 'help' เพื่อดูคำสั่ง</span>`;
+          break;
+      }
+
+      history.appendChild(response);
+      input.value = '';
+
+      const screen = document.getElementById('terminalScreen');
+      screen.scrollTop = screen.scrollHeight;
+    }
+
+    function escapeHtml(text) {
+      return text.replace(/[&<>"']/g, m => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      })[m]);
+    }
+
+    // Oscilloscope Interactive Animation
+    function setWaveMode(mode) {
+      currentWaveMode = mode;
+      playSciFiSound(580, 'sine', 0.05);
+      showToast(`OSCILLOSCOPE: ${mode.toUpperCase()} WAVE ACTIVE`);
+    }
+
+    function initOscilloscope() {
+      const canvas = document.getElementById('scopeCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      canvas.width = canvas.parentElement.clientWidth;
+      canvas.height = canvas.parentElement.clientHeight;
+
+      let t = 0;
+      if (scopeAnimId) cancelAnimationFrame(scopeAnimId);
+
+      function draw() {
+        ctx.fillStyle = 'rgba(2, 5, 10, 0.25)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--theme-primary').trim() || '#00f0ff';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+
+        const midY = canvas.height / 2;
+        const amp = canvas.height * 0.35;
+
+        for (let x = 0; x < canvas.width; x++) {
+          let y = midY;
+          if (currentWaveMode === 'sine') {
+            y = midY + Math.sin((x * 0.04) + t) * amp;
+          } else if (currentWaveMode === 'square') {
+            y = midY + (Math.sin((x * 0.03) + t) >= 0 ? amp * 0.85 : -amp * 0.85);
+          } else if (currentWaveMode === 'saw') {
+            y = midY + (((x * 0.02 + t) % 1) * 2 - 1) * amp;
+          }
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+
+        ctx.stroke();
+        t += 0.08;
+        scopeAnimId = requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    // Gyro simulation & telemetry tick
+    let gyroAngle = 0;
+    setInterval(() => {
+      // Rotate Gyro
+      gyroAngle = (gyroAngle + 1.2) % 360;
+      const ring = document.getElementById('gyroRing');
+      const text = document.getElementById('gyroAngleText');
+      if (ring && text) {
+        ring.style.transform = `rotate(${gyroAngle}deg)`;
+        text.innerText = `${gyroAngle.toFixed(1)}°`;
+      }
+
+      // Random load simulation
+      const cpu = Math.floor(22 + Math.random() * 16);
+      const cpuLoadText = document.getElementById('cpuLoadText');
+      const cpuBar = document.getElementById('cpuBar');
+      if (cpuLoadText && cpuBar) {
+        cpuLoadText.innerText = `${cpu}%`;
+        cpuBar.style.width = `${cpu}%`;
+      }
+    }, 400);
+
+    // Live Header Clock
+    function updateClock() {
+      const now = new Date();
+      const clockEl = document.getElementById('liveClock');
+      if (clockEl) {
+        clockEl.innerText = now.toLocaleTimeString('th-TH');
+      }
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // DOM Ready
+    window.addEventListener('DOMContentLoaded', () => {
+      renderCores();
+      window.addEventListener('resize', () => {
+        if (!document.getElementById('tab-telemetry').classList.contains('hidden')) {
+          initOscilloscope();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
