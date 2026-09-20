@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ประวัติส่วนตัว</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, "Tahoma", sans-serif;
+            background: linear-gradient(135deg, #e0f2fe, #f5f3ff);
+            color: #333;
+        }
+
+        /* เมนูด้านบน */
+        nav {
+            background: white;
+            padding: 18px 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        nav h2 {
+            margin: 0;
+            color: #4f46e5;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #555;
+            margin-left: 25px;
+        }
+
+        nav a:hover {
+            color: #4f46e5;
+        }
+
+        /* ส่วนแนะนำตัว */
+        .hero {
+            max-width: 1000px;
+            margin: 60px auto;
+            padding: 50px;
+            background: white;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .profile {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 70px;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+            margin-bottom: 10px;
+            color: #222;
+        }
+
+        .hero h1 span {
+            color: #4f46e5;
+        }
+
+        .hero p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #666;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 25px;
+            background: #4f46e5;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+        }
+
+        .button:hover {
+            background: #3730a3;
+        }
+
+        /* ข้อมูล */
+        .content {
+            max-width: 1000px;
+            margin: 0 auto 60px;
+        }
+
+        .content h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+        }
+
+        .card h3 {
+            color: #4f46e5;
+        }
+
+        .card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* ส่วนท้าย */
+        footer {
+            text-align: center;
+            background: #312e81;
+            color: white;
+            padding: 25px;
+        }
+
+        /* สำหรับมือถือ */
+        @media (max-width: 700px) {
+
+            .hero {
+                margin: 30px 15px;
+                padding: 30px;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+                margin: 0 15px;
+            }
+
+            nav {
+                padding: 15px;
+            }
+
+            nav a {
+                margin-left: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- เมนู -->
+    <nav>
+        <h2>My Profile</h2>
+
+        <div>
+            <a href="#">หน้าหลัก</a>
+            <a href="#">เกี่ยวกับฉัน</a>
+            <a href="#">ติดต่อ</a>
+        </div>
+    </nav>
+
+
+    <!-- แนะนำตัว -->
+    <section class="hero">
+
+        <div class="profile">
+            👩🏻‍💻
+        </div>
+
+        <div>
+            <h1>สวัสดีค่ะ 👋<br>
+                ฉันชื่อ <span>นารีลักษณ์</span>
+            </h1>
+
+            <p>
+                นักศึกษาสาขาวิศวกรรมเมคคาทรอนิกส์<br>
+                สนใจด้าน Robotics, Automation และเทคโนโลยี IoT
+            </p>
+
+            <a href="#" class="button">
+                ดูข้อมูลเพิ่มเติม
+            </a>
+        </div>
+
+    </section>
+
+
+    <!-- ข้อมูล -->
+    <section class="content">
+
+        <h2>เกี่ยวกับฉัน</h2>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>🎓 การศึกษา</h3>
+                <p>
+                    นักศึกษาสาขาวิศวกรรมเมคคาทรอนิกส์
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>🤖 ความสนใจ</h3>
+                <p>
+                    Robotics<br>
+                    Automation<br>
+                    IoT
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>💻 ทักษะ</h3>
+                <p>
+                    HTML / CSS<br>
+                    Arduino<br>
+                    ESP32
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+        © 2026 My Profile | Mechatronics Engineering
+    </footer>
+
+</body>
+</html>

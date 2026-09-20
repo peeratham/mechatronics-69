@@ -1,10 +1,205 @@
 <!DOCTYPE html>
-<html>
+<html lang="th" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
-  <title>ธนโชค อิ่นแก้ว</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ธนโชค อิ่นแก้ว — Thnachok Inkaew</title>
+  
+  <!-- Google Fonts: Inter & Prompt -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Prompt:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Prompt"', '"Inter"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Phosphor Icons CDN -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <style>
+    body {
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    }
+  </style>
 </head>
-<body>
-  <h1>ธนโชค อิ่นแก้ว</h1>
+
+<body class="bg-stone-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 transition-colors duration-200 min-h-screen font-sans selection:bg-zinc-900 selection:text-white dark:selection:bg-zinc-100 dark:selection:text-zinc-900 flex flex-col justify-between">
+  
+  <main class="max-w-2xl w-full mx-auto px-6 pt-16 pb-20 sm:pt-24 space-y-16">
+    
+    <!-- Top Bar: Status indicator & Theme Toggle -->
+    <header class="flex items-center justify-between text-xs font-mono tracking-wider text-zinc-400 dark:text-zinc-500">
+      <div class="flex items-center gap-2">
+        <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+        <span>MECHATRONICS 69 &middot; ACTIVE</span>
+      </div>
+      
+      <button 
+        id="themeToggle" 
+        class="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-full border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors text-zinc-600 dark:text-zinc-400"
+        aria-label="Toggle Theme"
+      >
+        <i id="themeIcon" class="ph ph-moon text-xs"></i>
+        <span id="themeText" class="text-[11px]">THEME</span>
+      </button>
+    </header>
+
+    <!-- Hero Section (Clean Typographic, No Avatar) -->
+    <section class="space-y-4">
+      <div class="space-y-1">
+        <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
+          ธนโชค อิ่นแก้ว
+        </h1>
+        <p class="text-sm font-mono text-zinc-400 dark:text-zinc-500 tracking-wide">
+          Thnachok Inkaew
+        </p>
+      </div>
+
+      <p class="text-base text-zinc-600 dark:text-zinc-400 leading-relaxed font-normal pt-2">
+        นักศึกษาอายุ 21 ปี ภาควิชาวิศวกรรมเมคคาทรอนิกส์ ผู้หลงใหลในระบบฮาร์ดแวร์ อุปกรณ์อัจฉริยะ และการจำลองโลกในวิดีโอเกม
+      </p>
+    </section>
+
+    <!-- Quick Specs / Minimal Data -->
+    <section class="grid grid-cols-3 gap-3 border-y border-zinc-200 dark:border-zinc-800/80 py-6">
+      <div>
+        <span class="block text-[11px] font-mono uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-1">Age</span>
+        <span class="text-sm font-medium text-zinc-900 dark:text-zinc-100">21 ปี</span>
+      </div>
+      <div>
+        <span class="block text-[11px] font-mono uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-1">Role</span>
+        <span class="text-sm font-medium text-zinc-900 dark:text-zinc-100">Student</span>
+      </div>
+      <div>
+        <span class="block text-[11px] font-mono uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-1">Passion</span>
+        <span class="text-sm font-medium text-zinc-900 dark:text-zinc-100">Gaming & Tech</span>
+      </div>
+    </section>
+
+    <!-- About & Interests -->
+    <section class="space-y-10">
+      
+      <!-- Bio -->
+      <div class="space-y-3">
+        <h2 class="text-xs font-mono uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+          About
+        </h2>
+        <div class="text-sm sm:text-base text-zinc-600 dark:text-zinc-300 leading-relaxed space-y-3">
+          <p>
+            กำลังศึกษาด้าน <strong>Mechatronics & Automation</strong> เรียนรู้การออกแบบระบบควบคุม การผสานไมโครคอนโทรลเลอร์เข้ากับฮาร์ดแวร์จริง และการเขียนโปรแกรมจัดการการทำงานของเครื่องจักร
+          </p>
+          <p>
+            นอกเวลาเรียนให้ความสนใจกับวงการ <strong>Gaming</strong> อย่างจริงจัง ทั้งการเล่นเพื่อความสนุก ทักษะการวางกลยุทธ์ทีมเวิร์ก การติดตามเทคโนโลยีคอมพิวเตอร์กราฟิก และการจัดพื้นที่ทำงาน/เล่นเกมแบบมินิมอลคลีน
+          </p>
+        </div>
+      </div>
+
+      <!-- Gaming Corner -->
+      <div class="space-y-4">
+        <h2 class="text-xs font-mono uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+          Gaming Preferences
+        </h2>
+
+        <div class="space-y-3">
+          <div class="flex items-baseline justify-between text-sm py-2 border-b border-zinc-100 dark:border-zinc-900">
+            <span class="font-medium text-zinc-800 dark:text-zinc-200">Tactical Shooter & FPS</span>
+            <span class="text-xs font-mono text-zinc-400 dark:text-zinc-500">Competitive & Teamplay</span>
+          </div>
+
+          <div class="flex items-baseline justify-between text-sm py-2 border-b border-zinc-100 dark:border-zinc-900">
+            <span class="font-medium text-zinc-800 dark:text-zinc-200">Open-World / Survival</span>
+            <span class="text-xs font-mono text-zinc-400 dark:text-zinc-500">Exploration & Crafting</span>
+          </div>
+
+          <div class="flex items-baseline justify-between text-sm py-2 border-b border-zinc-100 dark:border-zinc-900">
+            <span class="font-medium text-zinc-800 dark:text-zinc-200">Gaming Gear & PC Build</span>
+            <span class="text-xs font-mono text-zinc-400 dark:text-zinc-500">Hardware & Peripherals</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skills / Technologies -->
+      <div class="space-y-3">
+        <h2 class="text-xs font-mono uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+          Focus Areas
+        </h2>
+        <div class="flex flex-wrap gap-2 text-xs font-mono">
+          <span class="px-2.5 py-1 rounded bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border border-zinc-200/60 dark:border-zinc-800">Mechatronics</span>
+          <span class="px-2.5 py-1 rounded bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border border-zinc-200/60 dark:border-zinc-800">Robotics</span>
+          <span class="px-2.5 py-1 rounded bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border border-zinc-200/60 dark:border-zinc-800">Microcontrollers</span>
+          <span class="px-2.5 py-1 rounded bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border border-zinc-200/60 dark:border-zinc-800">PC Hardware</span>
+          <span class="px-2.5 py-1 rounded bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border border-zinc-200/60 dark:border-zinc-800">Game Tech</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Minimal Links / Socials -->
+    <section class="space-y-3 pt-4">
+      <h2 class="text-xs font-mono uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+        Connect
+      </h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-mono">
+        <a href="#" class="p-3 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 transition flex items-center justify-between text-zinc-700 dark:text-zinc-300 group">
+          <span>GitHub</span>
+          <i class="ph ph-arrow-up-right group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+        </a>
+        <a href="#" class="p-3 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 transition flex items-center justify-between text-zinc-700 dark:text-zinc-300 group">
+          <span>Discord</span>
+          <i class="ph ph-arrow-up-right group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+        </a>
+        <a href="#" class="p-3 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 transition flex items-center justify-between text-zinc-700 dark:text-zinc-300 group">
+          <span>Steam</span>
+          <i class="ph ph-arrow-up-right group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+        </a>
+        <a href="#" class="p-3 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 transition flex items-center justify-between text-zinc-700 dark:text-zinc-300 group">
+          <span>Email</span>
+          <i class="ph ph-arrow-up-right group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="w-full border-t border-zinc-200 dark:border-zinc-800/80 py-6 text-xs font-mono text-zinc-400 dark:text-zinc-500">
+    <div class="max-w-2xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div>&copy; 2026 ธนโชค อิ่นแก้ว</div>
+      <div>MINIMALIST WEB PROFILE</div>
+    </div>
+  </footer>
+
+  <script>
+    const toggleBtn = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const htmlEl = document.documentElement;
+
+    // Check system preference
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      htmlEl.classList.add('dark');
+      themeIcon.classList.replace('ph-moon', 'ph-sun');
+    }
+
+    toggleBtn.addEventListener('click', () => {
+      const isDark = htmlEl.classList.toggle('dark');
+      if (isDark) {
+        themeIcon.classList.replace('ph-moon', 'ph-sun');
+      } else {
+        themeIcon.classList.replace('ph-sun', 'ph-moon');
+      }
+    });
+  </script>
 </body>
 </html>
